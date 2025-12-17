@@ -94,11 +94,20 @@ case "$ACTION" in
             echo -e "${RED}Usage: $0 start <work_package_id>${NC}"
             exit 1
         fi
-        
+
+        # Get current lockVersion first (required by OpenProject API)
+        CURRENT=$(api_get "/work_packages/$WP_ID")
+        LOCK_VERSION=$(echo "$CURRENT" | grep -oP '"lockVersion":\d+' | head -n 1 | grep -oP '\d+')
+
+        if [ -z "$LOCK_VERSION" ]; then
+            echo -e "${RED}❌ Impossible de récupérer le lockVersion${NC}"
+            exit 1
+        fi
+
         STATUS_ID=$(get_status_id "in_progress")
-        
-        RESPONSE=$(api_patch "/work_packages/$WP_ID" "{\"_links\":{\"status\":{\"href\":\"/api/v3/statuses/$STATUS_ID\"}}}")
-        
+
+        RESPONSE=$(api_patch "/work_packages/$WP_ID" "{\"lockVersion\":$LOCK_VERSION,\"_links\":{\"status\":{\"href\":\"/api/v3/statuses/$STATUS_ID\"}}}")
+
         if echo "$RESPONSE" | grep -q '"_type":"WorkPackage"'; then
             echo -e "${GREEN}✓ Ticket #${WP_ID} → In Progress${NC}"
         else
@@ -112,15 +121,25 @@ case "$ACTION" in
             echo -e "${RED}Usage: $0 review <work_package_id>${NC}"
             exit 1
         fi
-        
+
+        # Get current lockVersion first (required by OpenProject API)
+        CURRENT=$(api_get "/work_packages/$WP_ID")
+        LOCK_VERSION=$(echo "$CURRENT" | grep -oP '"lockVersion":\d+' | head -n 1 | grep -oP '\d+')
+
+        if [ -z "$LOCK_VERSION" ]; then
+            echo -e "${RED}❌ Impossible de récupérer le lockVersion${NC}"
+            exit 1
+        fi
+
         STATUS_ID=$(get_status_id "in_review")
-        
-        RESPONSE=$(api_patch "/work_packages/$WP_ID" "{\"_links\":{\"status\":{\"href\":\"/api/v3/statuses/$STATUS_ID\"}}}")
-        
+
+        RESPONSE=$(api_patch "/work_packages/$WP_ID" "{\"lockVersion\":$LOCK_VERSION,\"_links\":{\"status\":{\"href\":\"/api/v3/statuses/$STATUS_ID\"}}}")
+
         if echo "$RESPONSE" | grep -q '"_type":"WorkPackage"'; then
             echo -e "${GREEN}✓ Ticket #${WP_ID} → In Review${NC}"
         else
             echo -e "${RED}❌ Erreur lors de la mise à jour${NC}"
+            echo "$RESPONSE" | head -5
         fi
         ;;
         
@@ -129,24 +148,63 @@ case "$ACTION" in
             echo -e "${RED}Usage: $0 close <work_package_id>${NC}"
             exit 1
         fi
-        
+
+        # Get current lockVersion first (required by OpenProject API)
+        CURRENT=$(api_get "/work_packages/$WP_ID")
+        LOCK_VERSION=$(echo "$CURRENT" | grep -oP '"lockVersion":\d+' | head -n 1 | grep -oP '\d+')
+
+        if [ -z "$LOCK_VERSION" ]; then
+            echo -e "${RED}❌ Impossible de récupérer le lockVersion${NC}"
+            exit 1
+        fi
+
         STATUS_ID=$(get_status_id "closed")
-        
-        RESPONSE=$(api_patch "/work_packages/$WP_ID" "{\"_links\":{\"status\":{\"href\":\"/api/v3/statuses/$STATUS_ID\"}}}")
-        
+
+        RESPONSE=$(api_patch "/work_packages/$WP_ID" "{\"lockVersion\":$LOCK_VERSION,\"_links\":{\"status\":{\"href\":\"/api/v3/statuses/$STATUS_ID\"}}}")
+
         if echo "$RESPONSE" | grep -q '"_type":"WorkPackage"'; then
             echo -e "${GREEN}✓ Ticket #${WP_ID} → Closed${NC}"
         else
             echo -e "${RED}❌ Erreur lors de la mise à jour${NC}"
+            echo "$RESPONSE" | head -5
         fi
         ;;
         
+    "close-batch")
+        if [ -z "$WP_ID" ]; then
+            echo -e "${RED}Usage: $0 close-batch <start_id> <end_id>${NC}"
+            exit 1
+        fi
+
+        START_ID=$WP_ID
+        END_ID=${EXTRA:-$START_ID}
+        STATUS_ID=$(get_status_id "closed")
+
+        for ID in $(seq $START_ID $END_ID); do
+            CURRENT=$(api_get "/work_packages/$ID")
+            LOCK_VERSION=$(echo "$CURRENT" | grep -oP '"lockVersion":\d+' | head -n 1 | grep -oP '\d+')
+
+            if [ -z "$LOCK_VERSION" ]; then
+                echo -e "${YELLOW}⚠ Ticket #${ID} - lockVersion non trouvé, skip${NC}"
+                continue
+            fi
+
+            RESPONSE=$(api_patch "/work_packages/$ID" "{\"lockVersion\":$LOCK_VERSION,\"_links\":{\"status\":{\"href\":\"/api/v3/statuses/$STATUS_ID\"}}}")
+
+            if echo "$RESPONSE" | grep -q '"_type":"WorkPackage"'; then
+                echo -e "${GREEN}✓ Ticket #${ID} → Closed${NC}"
+            else
+                echo -e "${RED}❌ Ticket #${ID} - Erreur${NC}"
+            fi
+        done
+        ;;
+
     "comment")
         if [ -z "$WP_ID" ] || [ -z "$EXTRA" ]; then
             echo -e "${RED}Usage: $0 comment <work_package_id> \"commentaire\"${NC}"
             exit 1
         fi
-        
+
         RESPONSE=$(api_post "/work_packages/$WP_ID/activities" "{\"comment\":{\"raw\":\"$EXTRA\"}}")
         
         if echo "$RESPONSE" | grep -q '"_type":"Activity"'; then
