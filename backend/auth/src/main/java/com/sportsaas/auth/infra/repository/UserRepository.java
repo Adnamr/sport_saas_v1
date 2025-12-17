@@ -1,6 +1,7 @@
 package com.sportsaas.auth.infra.repository;
 
 import com.sportsaas.auth.domain.entity.User;
+import com.sportsaas.auth.domain.enums.UserRole;
 import com.sportsaas.auth.domain.enums.UserStatus;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -30,6 +31,8 @@ public interface UserRepository extends JpaRepository<User, UUID> {
 
     Page<User> findByTenantIdAndStatus(UUID tenantId, UserStatus status, Pageable pageable);
 
+    Page<User> findByTenantIdAndRole(UUID tenantId, UserRole role, Pageable pageable);
+
     @Query("SELECT u FROM User u WHERE u.tenantId = :tenantId AND " +
            "(LOWER(u.firstName) LIKE LOWER(CONCAT('%', :search, '%')) OR " +
            "LOWER(u.lastName) LIKE LOWER(CONCAT('%', :search, '%')) OR " +
@@ -45,4 +48,6 @@ public interface UserRepository extends JpaRepository<User, UUID> {
     long countByTenantId(UUID tenantId);
 
     long countByTenantIdAndStatus(UUID tenantId, UserStatus status);
+
+    long countByTenantIdAndRole(UUID tenantId, UserRole role);
 }

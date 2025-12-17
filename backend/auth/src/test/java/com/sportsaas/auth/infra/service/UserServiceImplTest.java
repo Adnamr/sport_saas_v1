@@ -193,4 +193,108 @@ class UserServiceImplTest {
         assertThat(testUser.getStatus()).isEqualTo(UserStatus.DELETED);
         verify(userRepository).save(testUser);
     }
+
+    @Test
+    void shouldAdminUpdateUser() {
+        // Given
+        User updateData = User.builder()
+            .firstName("Jane")
+            .lastName("Smith")
+            .role(UserRole.EMPLOYEE)
+            .status(UserStatus.ACTIVE)
+            .build();
+        when(userRepository.findById(userId)).thenReturn(Optional.of(testUser));
+        when(userRepository.save(any(User.class))).thenReturn(testUser);
+
+        // When
+        User result = userService.adminUpdate(userId, updateData);
+
+        // Then
+        assertThat(result).isNotNull();
+        assertThat(testUser.getFirstName()).isEqualTo("Jane");
+        assertThat(testUser.getLastName()).isEqualTo("Smith");
+        assertThat(testUser.getRole()).isEqualTo(UserRole.EMPLOYEE);
+        verify(userRepository).save(testUser);
+    }
+
+    @Test
+    void shouldFindUsersByTenantIdAndRole() {
+        // Given
+        Page<User> page = new PageImpl<>(List.of(testUser));
+        when(userRepository.findByTenantIdAndRole(tenantId, UserRole.CUSTOMER, PageRequest.of(0, 10)))
+            .thenReturn(page);
+
+        // When
+        Page<User> result = userService.findByTenantIdAndRole(tenantId, UserRole.CUSTOMER, PageRequest.of(0, 10));
+
+        // Then
+        assertThat(result.getContent()).hasSize(1);
+        assertThat(result.getContent().get(0).getRole()).isEqualTo(UserRole.CUSTOMER);
+    }
+
+    @Test
+    void shouldAssignRole() {
+        // Given
+        when(userRepository.findById(userId)).thenReturn(Optional.of(testUser));
+        when(userRepository.save(any(User.class))).thenReturn(testUser);
+
+        // When
+        User result = userService.assignRole(userId, UserRole.EMPLOYEE);
+
+        // Then
+        assertThat(result.getRole()).isEqualTo(UserRole.EMPLOYEE);
+        verify(userRepository).save(testUser);
+    }
+
+    @Test
+    void shouldResetPassword() {
+        // Given
+        testUser.setPasswordResetToken("token123");
+        when(userRepository.findById(userId)).thenReturn(Optional.of(testUser));
+        when(userRepository.save(any(User.class))).thenReturn(testUser);
+
+        // When
+        User result = userService.resetPassword(userId, "new_encoded_password");
+
+        // Then
+        assertThat(result.getPassword()).isEqualTo("new_encoded_password");
+        assertThat(result.getPasswordResetToken()).isNull();
+        verify(userRepository).save(testUser);
+    }
+
+    @Test
+    void shouldGetStatistics() {
+        // Given
+        when(userRepository.countByTenantId(tenantId)).thenReturn(100L);
+        when(userRepository.countByTenantIdAndStatus(tenantId, UserStatus.ACTIVE)).thenReturn(80L);
+        when(userRepository.countByTenantIdAndStatus(tenantId, UserStatus.PENDING)).thenReturn(10L);
+        when(userRepository.countByTenantIdAndStatus(tenantId, UserStatus.SUSPENDED)).thenReturn(5L);
+        when(userRepository.countByTenantIdAndStatus(tenantId, UserStatus.LOCKED)).thenReturn(5L);
+        when(userRepository.countByTenantIdAndRole(tenantId, UserRole.TENANT_ADMIN)).thenReturn(2L);
+        when(userRepository.countByTenantIdAndRole(tenantId, UserRole.EMPLOYEE)).thenReturn(18L);
+        when(userRepository.countByTenantIdAndRole(tenantId, UserRole.CUSTOMER)).thenReturn(80L);
+
+        // When
+        var result = userService.getStatistics(tenantId);
+
+        // Then
+        assertThat(result.total()).isEqualTo(100L);
+        assertThat(result.active()).isEqualTo(80L);
+        assertThat(result.pending()).isEqualTo(10L);
+        assertThat(result.suspended()).isEqualTo(5L);
+        assertThat(result.locked()).isEqualTo(5L);
+        assertThat(result.admins()).isEqualTo(2L);
+        assertThat(result.employees()).isEqualTo(18L);
+        assertThat(result.customers()).isEqualTo(80L);
+    }
+
+    @Test
+    void shouldThrowNotFoundWhenAssigningRoleToNonExistentUser() {
+        // Given
+        when(userRepository.findById(userId)).thenReturn(Optional.empty());
+
+        // When/Then
+        assertThatThrownBy(() -> userService.assignRole(userId, UserRole.EMPLOYEE))
+            .isInstanceOf(NotFoundException.class);
+    }
 }
