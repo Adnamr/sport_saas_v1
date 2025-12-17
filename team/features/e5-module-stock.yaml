@@ -1,0 +1,291 @@
+# ═══════════════════════════════════════════════════════════════════
+# FEATURE E5: Module Stock
+# ═══════════════════════════════════════════════════════════════════
+# Généré depuis OpenProject le 2025-12-17 16:50
+# Tickets: 8 | Estimation: 28h (~3 jours)
+
+feature:
+  id: "E5"
+  name: "Module Stock"
+  description: |
+    Feature regroupant 8 tickets de l'epic E5.
+    Modules concernés: inventory
+  
+  priority: "high"
+  estimated_days: 3
+  status: "todo"
+
+# ═══════════════════════════════════════════════════════════════════
+# TICKETS INCLUS
+# ═══════════════════════════════════════════════════════════════════
+
+tickets:
+
+  - id: "E5-001"
+    title: "Modèle Warehouse"
+    module: "inventory"
+    priority: "high"
+    estimated_hours: 2
+    sprint: "Sprint 5"
+    status: "new"
+    acceptance_criteria:
+      - "Entité Warehouse (id, tenantId, name, address, isDefault, active)"
+      - "Migration Flyway"
+      - "Un entrepôt par défaut par tenant"
+      - "**Module:** inventory"
+
+  - id: "E5-002"
+    title: "Modèle Stock"
+    module: "inventory"
+    priority: "high"
+    estimated_hours: 3
+    sprint: "Sprint 5"
+    status: "new"
+    acceptance_criteria:
+      - "Entité Stock (id, tenantId, productId, warehouseId, quantity, reservedQuantity, alertThreshold)"
+      - "Index unique (tenant_id, product_id, warehouse_id)"
+      - "Migration Flyway"
+      - "Contrainte quantity >= 0"
+      - "**Module:** inventory"
+
+  - id: "E5-003"
+    title: "Modèle StockMovement"
+    module: "inventory"
+    priority: "high"
+    estimated_hours: 3
+    sprint: "Sprint 5"
+    status: "new"
+    acceptance_criteria:
+      - "Entité StockMovement (id, tenantId, stockId, type, quantity, reason, reference, userId, createdAt)"
+      - "Enum MovementType (IN, OUT, ADJUSTMENT, RESERVATION, RELEASE)"
+      - "Migration Flyway"
+      - "Immutable (pas d'update)"
+      - "**Module:** inventory"
+
+  - id: "E5-004"
+    title: "Modèle Reservation"
+    module: "inventory"
+    priority: "high"
+    estimated_hours: 3
+    sprint: "Sprint 5"
+    status: "new"
+    acceptance_criteria:
+      - "Entité Reservation (id, tenantId, stockId, orderId, quantity, status, expiresAt)"
+      - "Enum ReservationStatus (PENDING, CONFIRMED, RELEASED, EXPIRED)"
+      - "Migration Flyway"
+      - "Expiration automatique (job schedulé)"
+      - "**Module:** inventory"
+
+  - id: "E5-005"
+    title: "Service StockService"
+    module: "inventory"
+    priority: "high"
+    estimated_hours: 5
+    sprint: "Sprint 5"
+    status: "new"
+    acceptance_criteria:
+      - "Consultation stock par produit/entrepôt"
+      - "Entrée de stock (IN)"
+      - "Sortie de stock (OUT)"
+      - "Ajustement inventaire"
+      - "Calcul disponibilité (quantity - reservedQuantity)"
+
+  - id: "E5-006"
+    title: "Service ReservationService"
+    module: "inventory"
+    priority: "high"
+    estimated_hours: 5
+    sprint: "Sprint 5"
+    status: "new"
+    acceptance_criteria:
+      - "Création réservation avec vérification disponibilité"
+      - "Confirmation réservation (décrémente stock)"
+      - "Libération réservation (annulation)"
+      - "Expiration automatique des réservations"
+      - "Events: StockReservedEvent, StockReleasedEvent"
+
+  - id: "E5-007"
+    title: "API REST Warehouses"
+    module: "inventory"
+    priority: "high"
+    estimated_hours: 2
+    sprint: "Sprint 5"
+    status: "new"
+    acceptance_criteria:
+      - "GET /api/warehouses"
+      - "POST /api/warehouses (TENANT_ADMIN+)"
+      - "GET /api/warehouses/{id}"
+      - "PUT /api/warehouses/{id}"
+      - "DELETE /api/warehouses/{id}"
+
+  - id: "E5-008"
+    title: "API REST Stock"
+    module: "inventory"
+    priority: "high"
+    estimated_hours: 5
+    sprint: "Sprint 5"
+    status: "new"
+    acceptance_criteria:
+      - "GET /api/stock (liste avec filtres)"
+      - "GET /api/stock/product/{productId}"
+      - "POST /api/stock/movement (entrée/sortie/ajustement)"
+      - "GET /api/stock/movements (historique paginé)"
+      - "GET /api/stock/alerts (produits sous seuil)"
+
+# ═══════════════════════════════════════════════════════════════════
+# ENTITÉS DÉTECTÉES
+# ═══════════════════════════════════════════════════════════════════
+
+entities:
+
+  Movement:
+    description: "TODO: Décrire Movement"
+    module: "inventory"
+    fields:
+      - name: id
+        type: UUID
+        generated: true
+      # TODO: Ajouter les champs
+
+  Order:
+    description: "TODO: Décrire Order"
+    module: "inventory"
+    fields:
+      - name: id
+        type: UUID
+        generated: true
+      # TODO: Ajouter les champs
+
+  Product:
+    description: "TODO: Décrire Product"
+    module: "inventory"
+    fields:
+      - name: id
+        type: UUID
+        generated: true
+      # TODO: Ajouter les champs
+
+  Reservation:
+    description: "TODO: Décrire Reservation"
+    module: "inventory"
+    fields:
+      - name: id
+        type: UUID
+        generated: true
+      # TODO: Ajouter les champs
+
+  Stock:
+    description: "TODO: Décrire Stock"
+    module: "inventory"
+    fields:
+      - name: id
+        type: UUID
+        generated: true
+      # TODO: Ajouter les champs
+
+  StockMovement:
+    description: "TODO: Décrire StockMovement"
+    module: "inventory"
+    fields:
+      - name: id
+        type: UUID
+        generated: true
+      # TODO: Ajouter les champs
+
+  Tenant:
+    description: "TODO: Décrire Tenant"
+    module: "inventory"
+    fields:
+      - name: id
+        type: UUID
+        generated: true
+      # TODO: Ajouter les champs
+
+  User:
+    description: "TODO: Décrire User"
+    module: "inventory"
+    fields:
+      - name: id
+        type: UUID
+        generated: true
+      # TODO: Ajouter les champs
+
+  Warehouse:
+    description: "TODO: Décrire Warehouse"
+    module: "inventory"
+    fields:
+      - name: id
+        type: UUID
+        generated: true
+      # TODO: Ajouter les champs
+
+# ═══════════════════════════════════════════════════════════════════
+# API REST
+# ═══════════════════════════════════════════════════════════════════
+
+api:
+  module: "inventory"
+  endpoints:
+    - method: GET
+      path: "/api/warehouses"
+      description: "TODO"
+    - method: POST
+      path: "/api/warehouses"
+      description: "TODO"
+    - method: GET
+      path: "/api/warehouses/{id}"
+      description: "TODO"
+    - method: PUT
+      path: "/api/warehouses/{id}"
+      description: "TODO"
+    - method: DELETE
+      path: "/api/warehouses/{id}"
+      description: "TODO"
+    - method: GET
+      path: "/api/stock"
+      description: "TODO"
+    - method: GET
+      path: "/api/stock/product/{productId}"
+      description: "TODO"
+    - method: POST
+      path: "/api/stock/movement"
+      description: "TODO"
+    - method: GET
+      path: "/api/stock/movements"
+      description: "TODO"
+    - method: GET
+      path: "/api/stock/alerts"
+      description: "TODO"
+
+# ═══════════════════════════════════════════════════════════════════
+# FRONTEND
+# ═══════════════════════════════════════════════════════════════════
+
+frontend:
+  module: "inventory"
+  pages:
+    - name: "ListPage"
+      route: "/inventory"
+      type: list
+    - name: "DetailPage"
+      route: "/inventory/:id"
+      type: detail
+    - name: "FormPage"
+      route: "/inventory/new"
+      type: form
+
+# ═══════════════════════════════════════════════════════════════════
+# NOTES
+# ═══════════════════════════════════════════════════════════════════
+
+notes: |
+  Epic E5 importé depuis OpenProject.
+  
+  Sprints concernés: Sprint 5
+  
+  Dépendances détectées:
+    - [E2-005] BaseEntity avec tenant_id
+    - [E4-002] Modèle Product,[E5-001] Modèle Warehouse
+    - [E5-001] Modèle Warehouse
+    - [E5-002] Modèle Stock
+    - [E5-002] Modèle Stock,[E5-003] Modèle StockMovement

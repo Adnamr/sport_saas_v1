@@ -1,0 +1,216 @@
+# ═══════════════════════════════════════════════════════════════════
+# FEATURE E7: Module Invoice
+# ═══════════════════════════════════════════════════════════════════
+# Généré depuis OpenProject le 2025-12-17 16:50
+# Tickets: 6 | Estimation: 22h (~2 jours)
+
+feature:
+  id: "E7"
+  name: "Module Invoice"
+  description: |
+    Feature regroupant 6 tickets de l'epic E7.
+    Modules concernés: billing
+  
+  priority: "high"
+  estimated_days: 2
+  status: "todo"
+
+# ═══════════════════════════════════════════════════════════════════
+# TICKETS INCLUS
+# ═══════════════════════════════════════════════════════════════════
+
+tickets:
+
+  - id: "E7-001"
+    title: "Modèle Invoice"
+    module: "billing"
+    priority: "high"
+    estimated_hours: 3
+    sprint: "Sprint 7"
+    status: "new"
+    acceptance_criteria:
+      - "Entité Invoice (id, tenantId, orderId, invoiceNumber, status, totalHT, taxAmount, totalTTC, dueDate,"
+      - "Enum InvoiceStatus (DRAFT, SENT, PAID, OVERDUE, CANCELLED)"
+      - "Migration Flyway"
+      - "Numérotation séquentielle par tenant"
+      - "**Module:** billing"
+
+  - id: "E7-002"
+    title: "Modèle Payment"
+    module: "billing"
+    priority: "high"
+    estimated_hours: 3
+    sprint: "Sprint 7"
+    status: "new"
+    acceptance_criteria:
+      - "Entité Payment (id, tenantId, invoiceId, amount, method, status, transactionId, paidAt)"
+      - "Enum PaymentMethod (CARD, BANK_TRANSFER, CASH, OTHER)"
+      - "Enum PaymentStatus (PENDING, COMPLETED, FAILED, REFUNDED)"
+      - "Migration Flyway"
+      - "**Module:** billing"
+
+  - id: "E7-004"
+    title: "Service InvoiceService"
+    module: "billing"
+    priority: "high"
+    estimated_hours: 5
+    sprint: "Sprint 7"
+    status: "new"
+    acceptance_criteria:
+      - "Génération facture depuis commande"
+      - "Calcul TVA configurable par tenant"
+      - "Envoi facture (event)"
+      - "Marquage comme payée"
+      - "Détection factures en retard"
+
+  - id: "E7-005"
+    title: "Service PaymentService"
+    module: "billing"
+    priority: "high"
+    estimated_hours: 5
+    sprint: "Sprint 7"
+    status: "new"
+    acceptance_criteria:
+      - "Enregistrement paiement"
+      - "Intégration Stripe (préparation)"
+      - "Webhook handler pour callbacks"
+      - "Remboursements"
+      - "Events: PaymentConfirmedEvent, PaymentFailedEvent"
+
+  - id: "E7-006"
+    title: "API REST Invoices"
+    module: "billing"
+    priority: "high"
+    estimated_hours: 3
+    sprint: "Sprint 7"
+    status: "new"
+    acceptance_criteria:
+      - "GET /api/invoices (liste paginée)"
+      - "GET /api/invoices/{id}"
+      - "GET /api/invoices/{id}/pdf"
+      - "POST /api/invoices/{id}/send"
+      - "PUT /api/invoices/{id}/mark-paid"
+
+  - id: "E7-007"
+    title: "API REST Payments"
+    module: "billing"
+    priority: "high"
+    estimated_hours: 3
+    sprint: "Sprint 7"
+    status: "new"
+    acceptance_criteria:
+      - "POST /api/payments/checkout (initier paiement)"
+      - "POST /api/payments/webhook (callback PSP)"
+      - "GET /api/payments (historique)"
+      - "POST /api/payments/{id}/refund"
+      - "**Module:** billing"
+
+# ═══════════════════════════════════════════════════════════════════
+# ENTITÉS DÉTECTÉES
+# ═══════════════════════════════════════════════════════════════════
+
+entities:
+
+  Invoice:
+    description: "TODO: Décrire Invoice"
+    module: "billing"
+    fields:
+      - name: id
+        type: UUID
+        generated: true
+      # TODO: Ajouter les champs
+
+  Order:
+    description: "TODO: Décrire Order"
+    module: "billing"
+    fields:
+      - name: id
+        type: UUID
+        generated: true
+      # TODO: Ajouter les champs
+
+  Payment:
+    description: "TODO: Décrire Payment"
+    module: "billing"
+    fields:
+      - name: id
+        type: UUID
+        generated: true
+      # TODO: Ajouter les champs
+
+  Tenant:
+    description: "TODO: Décrire Tenant"
+    module: "billing"
+    fields:
+      - name: id
+        type: UUID
+        generated: true
+      # TODO: Ajouter les champs
+
+# ═══════════════════════════════════════════════════════════════════
+# API REST
+# ═══════════════════════════════════════════════════════════════════
+
+api:
+  module: "billing"
+  endpoints:
+    - method: GET
+      path: "/api/invoices"
+      description: "TODO"
+    - method: GET
+      path: "/api/invoices/{id}"
+      description: "TODO"
+    - method: GET
+      path: "/api/invoices/{id}/pdf"
+      description: "TODO"
+    - method: POST
+      path: "/api/invoices/{id}/send"
+      description: "TODO"
+    - method: PUT
+      path: "/api/invoices/{id}/mark"
+      description: "TODO"
+    - method: POST
+      path: "/api/payments/checkout"
+      description: "TODO"
+    - method: POST
+      path: "/api/payments/webhook"
+      description: "TODO"
+    - method: GET
+      path: "/api/payments"
+      description: "TODO"
+    - method: POST
+      path: "/api/payments/{id}/refund"
+      description: "TODO"
+
+# ═══════════════════════════════════════════════════════════════════
+# FRONTEND
+# ═══════════════════════════════════════════════════════════════════
+
+frontend:
+  module: "billing"
+  pages:
+    - name: "ListPage"
+      route: "/billing"
+      type: list
+    - name: "DetailPage"
+      route: "/billing/:id"
+      type: detail
+    - name: "FormPage"
+      route: "/billing/new"
+      type: form
+
+# ═══════════════════════════════════════════════════════════════════
+# NOTES
+# ═══════════════════════════════════════════════════════════════════
+
+notes: |
+  Epic E7 importé depuis OpenProject.
+  
+  Sprints concernés: Sprint 7
+  
+  Dépendances détectées:
+    - [E6-001] Modèle Order
+    - [E7-001] Modèle Invoice
+    - [E7-002] Modèle Payment
+    - [E7-004] Service InvoiceService
+    - [E7-005] Service PaymentService

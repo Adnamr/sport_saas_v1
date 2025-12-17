@@ -1,0 +1,296 @@
+# ═══════════════════════════════════════════════════════════════════
+# FEATURE E6: Module Cart
+# ═══════════════════════════════════════════════════════════════════
+# Généré depuis OpenProject le 2025-12-17 16:50
+# Tickets: 9 | Estimation: 40h (~5 jours)
+
+feature:
+  id: "E6"
+  name: "Module Cart"
+  description: |
+    Feature regroupant 9 tickets de l'epic E6.
+    Modules concernés: order
+  
+  priority: "high"
+  estimated_days: 5
+  status: "todo"
+
+# ═══════════════════════════════════════════════════════════════════
+# TICKETS INCLUS
+# ═══════════════════════════════════════════════════════════════════
+
+tickets:
+
+  - id: "E6-001"
+    title: "Modèle Order"
+    module: "order"
+    priority: "high"
+    estimated_hours: 5
+    sprint: "Sprint 6"
+    status: "new"
+    acceptance_criteria:
+      - "Entité Order (id, tenantId, customerId, orderNumber, type, status, totalAmount, notes)"
+      - "Enum OrderType (SALE, RENTAL)"
+      - "Enum OrderStatus (DRAFT, PENDING, CONFIRMED, PROCESSING, SHIPPED, DELIVERED, CANCELLED, RETURNED)"
+      - "Migration Flyway"
+      - "Génération auto orderNumber"
+
+  - id: "E6-002"
+    title: "Modèle OrderItem"
+    module: "order"
+    priority: "high"
+    estimated_hours: 3
+    sprint: "Sprint 6"
+    status: "new"
+    acceptance_criteria:
+      - "Entité OrderItem (id, orderId, productId, quantity, unitPrice, totalPrice, rentalStartDate, rentalEn"
+      - "Relation ManyToOne avec Order"
+      - "Migration Flyway"
+      - "**Module:** order"
+
+  - id: "E6-003"
+    title: "Modèle Cart"
+    module: "order"
+    priority: "high"
+    estimated_hours: 3
+    sprint: "Sprint 6"
+    status: "new"
+    acceptance_criteria:
+      - "Entité Cart (id, tenantId, userId, expiresAt)"
+      - "Entité CartItem (id, cartId, productId, quantity, type)"
+      - "Migration Flyway"
+      - "Expiration automatique (24h)"
+      - "**Module:** order"
+
+  - id: "E6-004"
+    title: "Service CartService"
+    module: "order"
+    priority: "high"
+    estimated_hours: 5
+    sprint: "Sprint 6"
+    status: "new"
+    acceptance_criteria:
+      - "Ajouter produit au panier"
+      - "Modifier quantité"
+      - "Supprimer item"
+      - "Vider panier"
+      - "Calcul totaux"
+
+  - id: "E6-005"
+    title: "Service OrderService"
+    module: "order"
+    priority: "high"
+    estimated_hours: 8
+    sprint: "Sprint 6"
+    status: "new"
+    acceptance_criteria:
+      - "Création commande depuis panier"
+      - "Réservation stock automatique"
+      - "Workflow de statuts avec validations"
+      - "Calcul totaux et taxes"
+      - "Annulation avec libération stock"
+
+  - id: "E6-006"
+    title: "Service RentalService"
+    module: "order"
+    priority: "high"
+    estimated_hours: 5
+    sprint: "Sprint 6"
+    status: "new"
+    acceptance_criteria:
+      - "Calcul prix location (durée × prix journalier)"
+      - "Vérification disponibilité sur période"
+      - "Gestion calendrier de disponibilité"
+      - "Retour de location"
+      - "Pénalités retard"
+
+  - id: "E6-007"
+    title: "API REST Cart"
+    module: "order"
+    priority: "high"
+    estimated_hours: 3
+    sprint: "Sprint 6"
+    status: "new"
+    acceptance_criteria:
+      - "GET /api/cart"
+      - "POST /api/cart/items"
+      - "PUT /api/cart/items/{itemId}"
+      - "DELETE /api/cart/items/{itemId}"
+      - "DELETE /api/cart (vider)"
+
+  - id: "E6-008"
+    title: "API REST Orders"
+    module: "order"
+    priority: "high"
+    estimated_hours: 5
+    sprint: "Sprint 6"
+    status: "new"
+    acceptance_criteria:
+      - "POST /api/orders (création depuis panier)"
+      - "GET /api/orders (liste paginée avec filtres)"
+      - "GET /api/orders/{id}"
+      - "PUT /api/orders/{id}/status (changement statut)"
+      - "POST /api/orders/{id}/cancel"
+
+  - id: "E6-009"
+    title: "API REST Rentals"
+    module: "order"
+    priority: "high"
+    estimated_hours: 3
+    sprint: "Sprint 6"
+    status: "new"
+    acceptance_criteria:
+      - "GET /api/rentals (locations en cours)"
+      - "GET /api/rentals/calendar (disponibilité produit)"
+      - "POST /api/rentals/{id}/return"
+      - "GET /api/rentals/overdue (retards)"
+      - "**Module:** order"
+
+# ═══════════════════════════════════════════════════════════════════
+# ENTITÉS DÉTECTÉES
+# ═══════════════════════════════════════════════════════════════════
+
+entities:
+
+  Cart:
+    description: "TODO: Décrire Cart"
+    module: "order"
+    fields:
+      - name: id
+        type: UUID
+        generated: true
+      # TODO: Ajouter les champs
+
+  CartItem:
+    description: "TODO: Décrire CartItem"
+    module: "order"
+    fields:
+      - name: id
+        type: UUID
+        generated: true
+      # TODO: Ajouter les champs
+
+  Order:
+    description: "TODO: Décrire Order"
+    module: "order"
+    fields:
+      - name: id
+        type: UUID
+        generated: true
+      # TODO: Ajouter les champs
+
+  OrderItem:
+    description: "TODO: Décrire OrderItem"
+    module: "order"
+    fields:
+      - name: id
+        type: UUID
+        generated: true
+      # TODO: Ajouter les champs
+
+  Product:
+    description: "TODO: Décrire Product"
+    module: "order"
+    fields:
+      - name: id
+        type: UUID
+        generated: true
+      # TODO: Ajouter les champs
+
+  Stock:
+    description: "TODO: Décrire Stock"
+    module: "order"
+    fields:
+      - name: id
+        type: UUID
+        generated: true
+      # TODO: Ajouter les champs
+
+  Tenant:
+    description: "TODO: Décrire Tenant"
+    module: "order"
+    fields:
+      - name: id
+        type: UUID
+        generated: true
+      # TODO: Ajouter les champs
+
+  User:
+    description: "TODO: Décrire User"
+    module: "order"
+    fields:
+      - name: id
+        type: UUID
+        generated: true
+      # TODO: Ajouter les champs
+
+# ═══════════════════════════════════════════════════════════════════
+# API REST
+# ═══════════════════════════════════════════════════════════════════
+
+api:
+  module: "order"
+  endpoints:
+    - method: GET
+      path: "/api/cart"
+      description: "TODO"
+    - method: POST
+      path: "/api/cart/items"
+      description: "TODO"
+    - method: PUT
+      path: "/api/cart/items/{itemId}"
+      description: "TODO"
+    - method: DELETE
+      path: "/api/cart/items/{itemId}"
+      description: "TODO"
+    - method: DELETE
+      path: "/api/cart"
+      description: "TODO"
+    - method: POST
+      path: "/api/orders"
+      description: "TODO"
+    - method: GET
+      path: "/api/orders"
+      description: "TODO"
+    - method: GET
+      path: "/api/orders/{id}"
+      description: "TODO"
+    - method: PUT
+      path: "/api/orders/{id}/status"
+      description: "TODO"
+    - method: POST
+      path: "/api/orders/{id}/cancel"
+      description: "TODO"
+
+# ═══════════════════════════════════════════════════════════════════
+# FRONTEND
+# ═══════════════════════════════════════════════════════════════════
+
+frontend:
+  module: "order"
+  pages:
+    - name: "ListPage"
+      route: "/order"
+      type: list
+    - name: "DetailPage"
+      route: "/order/:id"
+      type: detail
+    - name: "FormPage"
+      route: "/order/new"
+      type: form
+
+# ═══════════════════════════════════════════════════════════════════
+# NOTES
+# ═══════════════════════════════════════════════════════════════════
+
+notes: |
+  Epic E6 importé depuis OpenProject.
+  
+  Sprints concernés: Sprint 6
+  
+  Dépendances détectées:
+    - [E2-005] BaseEntity avec tenant_id,[E3-001] Modèle User en base de données
+    - [E2-005] BaseEntity avec tenant_id,[E4-002] Modèle Product
+    - [E6-001] Modèle Order,[E4-002] Modèle Product
+    - [E6-001] Modèle Order,[E6-002] Modèle OrderItem,[E5-006] Service ReservationService
+    - [E6-003] Modèle Cart,[E5-005] Service StockService

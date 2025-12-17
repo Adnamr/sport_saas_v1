@@ -1,0 +1,273 @@
+# ═══════════════════════════════════════════════════════════════════
+# FEATURE E4: Module Category
+# ═══════════════════════════════════════════════════════════════════
+# Généré depuis OpenProject le 2025-12-17 16:50
+# Tickets: 8 | Estimation: 29h (~3 jours)
+
+feature:
+  id: "E4"
+  name: "Module Category"
+  description: |
+    Feature regroupant 8 tickets de l'epic E4.
+    Modules concernés: catalog
+  
+  priority: "high"
+  estimated_days: 3
+  status: "todo"
+
+# ═══════════════════════════════════════════════════════════════════
+# TICKETS INCLUS
+# ═══════════════════════════════════════════════════════════════════
+
+tickets:
+
+  - id: "E4-001"
+    title: "Modèle Category"
+    module: "catalog"
+    priority: "high"
+    estimated_hours: 3
+    sprint: "Sprint 4"
+    status: "new"
+    acceptance_criteria:
+      - "Entité Category (id, tenantId, name, slug, description, parentId, imageUrl, sortOrder, active)"
+      - "Support hiérarchie (catégories parentes/enfants)"
+      - "Migration Flyway"
+      - "Index (tenant_id, slug) unique"
+      - "**Module:** catalog"
+
+  - id: "E4-002"
+    title: "Modèle Product"
+    module: "catalog"
+    priority: "high"
+    estimated_hours: 5
+    sprint: "Sprint 4"
+    status: "new"
+    acceptance_criteria:
+      - "Entité Product (id, tenantId, sku, name, description, categoryId, price, rentalPrice, status)"
+      - "Enum ProductStatus (DRAFT, ACTIVE, ARCHIVED)"
+      - "Enum ProductType (SALE, RENTAL, BOTH)"
+      - "Migration Flyway"
+      - "Index (tenant_id, sku) unique"
+
+  - id: "E4-003"
+    title: "Modèle ProductImage"
+    module: "catalog"
+    priority: "medium"
+    estimated_hours: 2
+    sprint: "Sprint 4"
+    status: "new"
+    acceptance_criteria:
+      - "Entité ProductImage (id, productId, url, altText, sortOrder, isPrimary)"
+      - "Relation ManyToOne avec Product"
+      - "Migration Flyway"
+      - "**Module:** catalog"
+
+  - id: "E4-004"
+    title: "Modèle ProductAttribute"
+    module: "catalog"
+    priority: "medium"
+    estimated_hours: 3
+    sprint: "Sprint 4"
+    status: "new"
+    acceptance_criteria:
+      - "Entité AttributeDefinition (id, tenantId, name, type, options, required)"
+      - "Entité ProductAttribute (id, productId, attributeDefinitionId, value)"
+      - "Types supportés: STRING, NUMBER, BOOLEAN, SELECT, MULTI_SELECT"
+      - "Migrations Flyway"
+      - "**Module:** catalog"
+
+  - id: "E4-005"
+    title: "Service CategoryService"
+    module: "catalog"
+    priority: "high"
+    estimated_hours: 3
+    sprint: "Sprint 4"
+    status: "new"
+    acceptance_criteria:
+      - "CRUD complet"
+      - "Récupération arborescence complète"
+      - "Validation unicité slug par tenant"
+      - "Réordonnancement (sortOrder)"
+      - "**Module:** catalog"
+
+  - id: "E4-006"
+    title: "Service ProductService"
+    module: "catalog"
+    priority: "high"
+    estimated_hours: 5
+    sprint: "Sprint 4"
+    status: "new"
+    acceptance_criteria:
+      - "CRUD complet"
+      - "Recherche avec filtres (category, status, price range, keyword)"
+      - "Pagination et tri"
+      - "Gestion des images"
+      - "Gestion des attributs dynamiques"
+
+  - id: "E4-007"
+    title: "API REST Categories"
+    module: "catalog"
+    priority: "high"
+    estimated_hours: 3
+    sprint: "Sprint 4"
+    status: "new"
+    acceptance_criteria:
+      - "GET /api/categories (liste avec arborescence)"
+      - "POST /api/categories (TENANT_ADMIN+)"
+      - "GET /api/categories/{id}"
+      - "PUT /api/categories/{id}"
+      - "DELETE /api/categories/{id}"
+
+  - id: "E4-008"
+    title: "API REST Products"
+    module: "catalog"
+    priority: "high"
+    estimated_hours: 5
+    sprint: "Sprint 4"
+    status: "new"
+    acceptance_criteria:
+      - "GET /api/products (liste paginée avec filtres)"
+      - "POST /api/products (TENANT_ADMIN+)"
+      - "GET /api/products/{id}"
+      - "PUT /api/products/{id}"
+      - "DELETE /api/products/{id} (soft delete)"
+
+# ═══════════════════════════════════════════════════════════════════
+# ENTITÉS DÉTECTÉES
+# ═══════════════════════════════════════════════════════════════════
+
+entities:
+
+  AttributeDefinition:
+    description: "TODO: Décrire AttributeDefinition"
+    module: "catalog"
+    fields:
+      - name: id
+        type: UUID
+        generated: true
+      # TODO: Ajouter les champs
+
+  Category:
+    description: "TODO: Décrire Category"
+    module: "catalog"
+    fields:
+      - name: id
+        type: UUID
+        generated: true
+      # TODO: Ajouter les champs
+
+  Order:
+    description: "TODO: Décrire Order"
+    module: "catalog"
+    fields:
+      - name: id
+        type: UUID
+        generated: true
+      # TODO: Ajouter les champs
+
+  Product:
+    description: "TODO: Décrire Product"
+    module: "catalog"
+    fields:
+      - name: id
+        type: UUID
+        generated: true
+      # TODO: Ajouter les champs
+
+  ProductAttribute:
+    description: "TODO: Décrire ProductAttribute"
+    module: "catalog"
+    fields:
+      - name: id
+        type: UUID
+        generated: true
+      # TODO: Ajouter les champs
+
+  ProductImage:
+    description: "TODO: Décrire ProductImage"
+    module: "catalog"
+    fields:
+      - name: id
+        type: UUID
+        generated: true
+      # TODO: Ajouter les champs
+
+  Tenant:
+    description: "TODO: Décrire Tenant"
+    module: "catalog"
+    fields:
+      - name: id
+        type: UUID
+        generated: true
+      # TODO: Ajouter les champs
+
+# ═══════════════════════════════════════════════════════════════════
+# API REST
+# ═══════════════════════════════════════════════════════════════════
+
+api:
+  module: "catalog"
+  endpoints:
+    - method: GET
+      path: "/api/categories"
+      description: "TODO"
+    - method: POST
+      path: "/api/categories"
+      description: "TODO"
+    - method: GET
+      path: "/api/categories/{id}"
+      description: "TODO"
+    - method: PUT
+      path: "/api/categories/{id}"
+      description: "TODO"
+    - method: DELETE
+      path: "/api/categories/{id}"
+      description: "TODO"
+    - method: GET
+      path: "/api/categories/{id}/products"
+      description: "TODO"
+    - method: GET
+      path: "/api/products"
+      description: "TODO"
+    - method: POST
+      path: "/api/products"
+      description: "TODO"
+    - method: GET
+      path: "/api/products/{id}"
+      description: "TODO"
+    - method: PUT
+      path: "/api/products/{id}"
+      description: "TODO"
+
+# ═══════════════════════════════════════════════════════════════════
+# FRONTEND
+# ═══════════════════════════════════════════════════════════════════
+
+frontend:
+  module: "catalog"
+  pages:
+    - name: "ListPage"
+      route: "/catalog"
+      type: list
+    - name: "DetailPage"
+      route: "/catalog/:id"
+      type: detail
+    - name: "FormPage"
+      route: "/catalog/new"
+      type: form
+
+# ═══════════════════════════════════════════════════════════════════
+# NOTES
+# ═══════════════════════════════════════════════════════════════════
+
+notes: |
+  Epic E4 importé depuis OpenProject.
+  
+  Sprints concernés: Sprint 4
+  
+  Dépendances détectées:
+    - [E2-005] BaseEntity avec tenant_id,[E3-013] RBAC - Annotations et vérifications
+    - [E4-001] Modèle Category
+    - [E4-002] Modèle Product
+    - [E4-002] Modèle Product,[E4-003] Modèle ProductImage
+    - [E4-005] Service CategoryService

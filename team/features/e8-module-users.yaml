@@ -1,0 +1,130 @@
+# ═══════════════════════════════════════════════════════════════════
+# FEATURE E8: Module Users
+# ═══════════════════════════════════════════════════════════════════
+# Généré depuis OpenProject le 2025-12-17 16:50
+# Tickets: 2 | Estimation: 8h (~1 jours)
+
+feature:
+  id: "E8"
+  name: "Module Users"
+  description: |
+    Feature regroupant 2 tickets de l'epic E8.
+    Modules concernés: auth
+  
+  priority: "medium"
+  estimated_days: 1
+  status: "todo"
+
+# ═══════════════════════════════════════════════════════════════════
+# TICKETS INCLUS
+# ═══════════════════════════════════════════════════════════════════
+
+tickets:
+
+  - id: "E8-001"
+    title: "Service UserService complet"
+    module: "auth"
+    priority: "medium"
+    estimated_hours: 5
+    sprint: "Sprint 8"
+    status: "new"
+    acceptance_criteria:
+      - "CRUD complet"
+      - "Recherche avec filtres (role, status, keyword)"
+      - "Activation/désactivation"
+      - "Changement de rôle"
+      - "Changement de mot de passe"
+
+  - id: "E8-002"
+    title: "API REST Users"
+    module: "auth"
+    priority: "medium"
+    estimated_hours: 3
+    sprint: "Sprint 8"
+    status: "new"
+    acceptance_criteria:
+      - "GET /api/users (liste paginée, TENANT_ADMIN+)"
+      - "POST /api/users (création, TENANT_ADMIN+)"
+      - "GET /api/users/{id}"
+      - "PUT /api/users/{id}"
+      - "DELETE /api/users/{id} (soft delete)"
+
+# ═══════════════════════════════════════════════════════════════════
+# ENTITÉS DÉTECTÉES
+# ═══════════════════════════════════════════════════════════════════
+
+entities:
+
+  Tenant:
+    description: "TODO: Décrire Tenant"
+    module: "auth"
+    fields:
+      - name: id
+        type: UUID
+        generated: true
+      # TODO: Ajouter les champs
+
+  User:
+    description: "TODO: Décrire User"
+    module: "auth"
+    fields:
+      - name: id
+        type: UUID
+        generated: true
+      # TODO: Ajouter les champs
+
+# ═══════════════════════════════════════════════════════════════════
+# API REST
+# ═══════════════════════════════════════════════════════════════════
+
+api:
+  module: "auth"
+  endpoints:
+    - method: GET
+      path: "/api/users"
+      description: "TODO"
+    - method: POST
+      path: "/api/users"
+      description: "TODO"
+    - method: GET
+      path: "/api/users/{id}"
+      description: "TODO"
+    - method: PUT
+      path: "/api/users/{id}"
+      description: "TODO"
+    - method: DELETE
+      path: "/api/users/{id}"
+      description: "TODO"
+    - method: PUT
+      path: "/api/users/{id}/role"
+      description: "TODO"
+
+# ═══════════════════════════════════════════════════════════════════
+# FRONTEND
+# ═══════════════════════════════════════════════════════════════════
+
+frontend:
+  module: "auth"
+  pages:
+    - name: "ListPage"
+      route: "/auth"
+      type: list
+    - name: "DetailPage"
+      route: "/auth/:id"
+      type: detail
+    - name: "FormPage"
+      route: "/auth/new"
+      type: form
+
+# ═══════════════════════════════════════════════════════════════════
+# NOTES
+# ═══════════════════════════════════════════════════════════════════
+
+notes: |
+  Epic E8 importé depuis OpenProject.
+  
+  Sprints concernés: Sprint 8
+  
+  Dépendances détectées:
+    - [E3-001] Modèle User en base de données
+    - [E8-001] Service UserService complet

@@ -1,0 +1,109 @@
+# ═══════════════════════════════════════════════════════════════════
+# FEATURE E12: Module Dockerfile
+# ═══════════════════════════════════════════════════════════════════
+# Généré depuis OpenProject le 2025-12-17 16:50
+# Tickets: 3 | Estimation: 7h (~1 jours)
+
+feature:
+  id: "E12"
+  name: "Module Dockerfile"
+  description: |
+    Feature regroupant 3 tickets de l'epic E12.
+    Modules concernés: infra
+  
+  priority: "high"
+  estimated_days: 1
+  status: "todo"
+
+# ═══════════════════════════════════════════════════════════════════
+# TICKETS INCLUS
+# ═══════════════════════════════════════════════════════════════════
+
+tickets:
+
+  - id: "E12-001"
+    title: "Dockerfile Backend"
+    module: "infra"
+    priority: "high"
+    estimated_hours: 2
+    sprint: "Sprint 1"
+    status: "new"
+    acceptance_criteria:
+      - "Multi-stage build"
+      - "Image optimisée (JRE slim)"
+      - "Non-root user"
+      - "Health check"
+      - "**Module:** infra"
+
+  - id: "E12-002"
+    title: "Dockerfile Frontend"
+    module: "infra"
+    priority: "high"
+    estimated_hours: 2
+    sprint: "Sprint 2"
+    status: "new"
+    acceptance_criteria:
+      - "Multi-stage build (node + nginx)"
+      - "Configuration nginx optimisée"
+      - "Gzip enabled"
+      - "Cache headers"
+      - "**Module:** infra"
+
+  - id: "E12-003"
+    title: "Docker Compose développement"
+    module: "infra"
+    priority: "high"
+    estimated_hours: 3
+    sprint: "Sprint 1"
+    status: "new"
+    acceptance_criteria:
+      - "Services: app, frontend, postgres, mailhog"
+      - "Volumes pour persistence"
+      - "Hot reload backend"
+      - "Variables environnement (.env)"
+      - "**Module:** infra"
+
+# ═══════════════════════════════════════════════════════════════════
+# ENTITÉS DÉTECTÉES
+# ═══════════════════════════════════════════════════════════════════
+
+entities:
+
+  User:
+    description: "TODO: Décrire User"
+    module: "infra"
+    fields:
+      - name: id
+        type: UUID
+        generated: true
+      # TODO: Ajouter les champs
+
+# ═══════════════════════════════════════════════════════════════════
+# FRONTEND
+# ═══════════════════════════════════════════════════════════════════
+
+frontend:
+  module: "infra"
+  pages:
+    - name: "ListPage"
+      route: "/infra"
+      type: list
+    - name: "DetailPage"
+      route: "/infra/:id"
+      type: detail
+    - name: "FormPage"
+      route: "/infra/new"
+      type: form
+
+# ═══════════════════════════════════════════════════════════════════
+# NOTES
+# ═══════════════════════════════════════════════════════════════════
+
+notes: |
+  Epic E12 importé depuis OpenProject.
+  
+  Sprints concernés: Sprint 1, Sprint 2
+  
+  Dépendances détectées:
+    - [E1-001] Setup Spring Boot,[E12-001] Dockerfile Backend
+    - [E11-001] Setup projet Angular

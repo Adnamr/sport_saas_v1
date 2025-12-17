@@ -1,0 +1,28 @@
+# IDE
+.idea/
+*.iml
+.vscode/
+*.swp
+
+# Build
+target/
+dist/
+build/
+node_modules/
+
+# Env
+.env
+*.local
+
+# Logs
+*.log
+logs/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Secrets
+*.secret
+*.key
+*.pem

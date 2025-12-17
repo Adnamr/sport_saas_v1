@@ -1,0 +1,251 @@
+# ═══════════════════════════════════════════════════════════════════
+# FEATURE E11: Module Frontend
+# ═══════════════════════════════════════════════════════════════════
+# Généré depuis OpenProject le 2025-12-17 16:50
+# Tickets: 11 | Estimation: 58h (~7 jours)
+
+feature:
+  id: "E11"
+  name: "Module Frontend"
+  description: |
+    Feature regroupant 11 tickets de l'epic E11.
+    Modules concernés: frontend
+  
+  priority: "high"
+  estimated_days: 7
+  status: "todo"
+
+# ═══════════════════════════════════════════════════════════════════
+# TICKETS INCLUS
+# ═══════════════════════════════════════════════════════════════════
+
+tickets:
+
+  - id: "E11-001"
+    title: "Setup projet Angular"
+    module: "frontend"
+    priority: "high"
+    estimated_hours: 3
+    sprint: "Sprint 1"
+    status: "new"
+    acceptance_criteria:
+      - "Angular 17+ avec standalone components"
+      - "Configuration routing"
+      - "HTTP interceptors (auth, tenant, errors)"
+      - "Structure dossiers (core, shared, features)"
+      - "Environnements (dev, prod)"
+
+  - id: "E11-002"
+    title: "Design System - Tokens CSS"
+    module: "frontend"
+    priority: "high"
+    estimated_hours: 3
+    sprint: "Sprint 1"
+    status: "new"
+    acceptance_criteria:
+      - "Variables CSS selon spec (couleurs, typo, spacing)"
+      - "Reset CSS"
+      - "Classes utilitaires"
+      - "Thème light"
+      - "**Module:** frontend"
+
+  - id: "E11-003"
+    title: "Composants UI de base"
+    module: "frontend"
+    priority: "high"
+    estimated_hours: 8
+    sprint: "Sprint 2"
+    status: "new"
+    acceptance_criteria:
+      - "Button (variants, sizes, loading)"
+      - "Input, Select, Checkbox, Radio"
+      - "Card, Modal, Toast"
+      - "Table avec pagination"
+      - "Loading spinner, Skeleton"
+
+  - id: "E11-004"
+    title: "Layout principal"
+    module: "frontend"
+    priority: "high"
+    estimated_hours: 3
+    sprint: "Sprint 2"
+    status: "new"
+    acceptance_criteria:
+      - "Sidebar navigation"
+      - "Header avec user menu"
+      - "Breadcrumbs"
+      - "Responsive (mobile menu)"
+      - "**Module:** frontend"
+
+  - id: "E11-005"
+    title: "Service AuthService Angular"
+    module: "frontend"
+    priority: "high"
+    estimated_hours: 5
+    sprint: "Sprint 3"
+    status: "new"
+    acceptance_criteria:
+      - "Login, logout, register"
+      - "Stockage tokens (localStorage)"
+      - "Auto refresh token"
+      - "Current user state (signal/observable)"
+      - "Guards (auth, roles)"
+
+  - id: "E11-006"
+    title: "Pages Auth"
+    module: "frontend"
+    priority: "high"
+    estimated_hours: 5
+    sprint: "Sprint 3"
+    status: "new"
+    acceptance_criteria:
+      - "Login page"
+      - "Register page"
+      - "Forgot password page"
+      - "Reset password page"
+      - "Validation formulaires"
+
+  - id: "E11-007"
+    title: "Dashboard page"
+    module: "frontend"
+    priority: "high"
+    estimated_hours: 5
+    sprint: "Sprint 4"
+    status: "new"
+    acceptance_criteria:
+      - "KPIs cards (ventes, stock, commandes)"
+      - "Graphiques (ventes, tendances)"
+      - "Commandes récentes"
+      - "Alertes stock"
+      - "**Module:** frontend"
+
+  - id: "E11-008"
+    title: "Module Catalogue Frontend"
+    module: "frontend"
+    priority: "high"
+    estimated_hours: 8
+    sprint: "Sprint 5"
+    status: "new"
+    acceptance_criteria:
+      - "Liste produits avec filtres et pagination"
+      - "Formulaire création/édition produit"
+      - "Upload images"
+      - "Gestion catégories (arbre)"
+      - "**Module:** frontend"
+
+  - id: "E11-009"
+    title: "Module Stock Frontend"
+    module: "frontend"
+    priority: "high"
+    estimated_hours: 5
+    sprint: "Sprint 5"
+    status: "new"
+    acceptance_criteria:
+      - "Vue stock par produit"
+      - "Mouvements de stock"
+      - "Alertes stock bas"
+      - "Gestion entrepôts"
+      - "**Module:** frontend"
+
+  - id: "E11-010"
+    title: "Module Commandes Frontend"
+    module: "frontend"
+    priority: "high"
+    estimated_hours: 8
+    sprint: "Sprint 6"
+    status: "new"
+    acceptance_criteria:
+      - "Liste commandes avec filtres"
+      - "Détail commande avec timeline"
+      - "Panier d'achat"
+      - "Checkout flow"
+      - "**Module:** frontend"
+
+  - id: "E11-011"
+    title: "Module Facturation Frontend"
+    module: "frontend"
+    priority: "high"
+    estimated_hours: 5
+    sprint: "Sprint 7"
+    status: "new"
+    acceptance_criteria:
+      - "Liste factures"
+      - "Détail facture"
+      - "Download PDF"
+      - "Historique paiements"
+      - "**Module:** frontend"
+
+# ═══════════════════════════════════════════════════════════════════
+# ENTITÉS DÉTECTÉES
+# ═══════════════════════════════════════════════════════════════════
+
+entities:
+
+  Stock:
+    description: "TODO: Décrire Stock"
+    module: "frontend"
+    fields:
+      - name: id
+        type: UUID
+        generated: true
+      # TODO: Ajouter les champs
+
+  Tenant:
+    description: "TODO: Décrire Tenant"
+    module: "frontend"
+    fields:
+      - name: id
+        type: UUID
+        generated: true
+      # TODO: Ajouter les champs
+
+  User:
+    description: "TODO: Décrire User"
+    module: "frontend"
+    fields:
+      - name: id
+        type: UUID
+        generated: true
+      # TODO: Ajouter les champs
+
+  avec:
+    description: "TODO: Décrire avec"
+    module: "frontend"
+    fields:
+      - name: id
+        type: UUID
+        generated: true
+      # TODO: Ajouter les champs
+
+# ═══════════════════════════════════════════════════════════════════
+# FRONTEND
+# ═══════════════════════════════════════════════════════════════════
+
+frontend:
+  module: "frontend"
+  pages:
+    - name: "ListPage"
+      route: "/frontend"
+      type: list
+    - name: "DetailPage"
+      route: "/frontend/:id"
+      type: detail
+    - name: "FormPage"
+      route: "/frontend/new"
+      type: form
+
+# ═══════════════════════════════════════════════════════════════════
+# NOTES
+# ═══════════════════════════════════════════════════════════════════
+
+notes: |
+  Epic E11 importé depuis OpenProject.
+  
+  Sprints concernés: Sprint 1, Sprint 2, Sprint 3, Sprint 4, Sprint 5, Sprint 6, Sprint 7
+  
+  Dépendances détectées:
+    - [E11-001] Setup projet Angular,[E11-002] Design System - Tokens CSS
+    - [E11-003] Composants UI de base
+    - [E11-004] Layout principal,[E3-005] Endpoint Login
+    - [E11-005] Service AuthService Angular
+    - [E11-005] Service AuthService Angular,[E4-008] API REST Products

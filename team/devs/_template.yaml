@@ -1,0 +1,79 @@
+# 👤 Fichier Développeur - Template
+# Copier ce fichier et renommer avec l'id du dev (ex: alice.yaml)
+
+# ═══════════════════════════════════════════════════════════════════
+#                    INFORMATIONS DÉVELOPPEUR
+# ═══════════════════════════════════════════════════════════════════
+
+dev:
+  id: "{DEV_ID}"
+  name: "{NOM COMPLET}"
+  email: "{EMAIL}"
+  slack: "@{SLACK_ID}"
+  role: "Développeur"  # Tech Lead / Dev Senior / Développeur
+  
+  # Date d'arrivée sur le projet
+  joined_at: "YYYY-MM-DD"
+  
+  # Accès (référence, pas les vrais tokens!)
+  access:
+    github: true
+    openproject: true
+    slack: true
+    server_dev: false
+
+# ═══════════════════════════════════════════════════════════════════
+#                    TICKET EN COURS
+# ═══════════════════════════════════════════════════════════════════
+
+current_ticket: null
+# Quand un ticket est en cours:
+# current_ticket:
+#   ticket_id: "E1-002"
+#   openproject_id: 42
+#   title: "PostgreSQL et Flyway"
+#   branch: "feature/42-E1-002-postgresql"
+#   started_at: "2025-01-15T09:00:00"
+#   
+#   # Critères d'acceptation (copié depuis le ticket)
+#   acceptance_criteria:
+#     - "Connexion PostgreSQL fonctionnelle"
+#     - "Flyway configuré"
+#     - "Scripts de migration"
+#     - "Configuration par environnement"
+#   
+#   # Fichiers modifiés
+#   files_touched: []
+#   
+#   # Notes personnelles
+#   notes: |
+#     Commencé par la config datasource
+#     TODO: ajouter les profils dev/prod
+
+# ═══════════════════════════════════════════════════════════════════
+#                    PRÉFÉRENCES CLAUDE CODE
+# ═══════════════════════════════════════════════════════════════════
+
+claude_preferences:
+  # Niveau de détail des explications
+  explanation_level: "normal"  # minimal / normal / detailed
+  
+  # Générer les tests automatiquement
+  auto_generate_tests: true
+  
+  # Style de code préféré
+  code_style:
+    use_lombok: true
+    use_records_for_dto: true
+    max_line_length: 120
+
+# ═══════════════════════════════════════════════════════════════════
+#                    HISTORIQUE (derniers tickets)
+# ═══════════════════════════════════════════════════════════════════
+
+history: []
+# Exemple:
+# history:
+#   - ticket_id: "E1-001"
+#     completed_at: "2025-01-14T17:30:00"
+#     pr_url: "https://github.com/org/repo/pull/1"

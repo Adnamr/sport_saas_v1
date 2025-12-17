@@ -1,0 +1,107 @@
+# ⚙️ Configuration Orchestrateur - Sport Equipment SaaS
+# Ce fichier définit les paramètres globaux du projet
+
+project:
+  name: "Sport Equipment SaaS"
+  description: "Plateforme multi-tenant de gestion de matériels sportifs"
+  version: "0.1.0"
+  
+# Liens externes
+links:
+  github: "https://github.com/[ORG]/sport-saas"
+  openproject: "https://aam.openproject.com/"
+  slack: "https://[workspace].slack.com"
+
+# Stack technique
+stack:
+  backend:
+    language: "Java 17"
+    framework: "Spring Boot 3.3"
+    database: "PostgreSQL 16"
+    migrations: "Flyway"
+  frontend:
+    framework: "Angular 17+"
+    styling: "TailwindCSS"
+  infra:
+    containers: "Docker"
+    ci: "GitHub Actions"
+
+# Règles de travail
+workflow:
+  # Branche principale
+  main_branch: "develop"
+  
+  # Format des branches
+  branch_format: "feature/{openproject_id}-{ticket_id}-{description}"
+  # Exemple: feature/42-E1-002-postgresql
+  
+  # Format des commits
+  commit_format: "{type}({ticket_id}): {message} - Refs #{openproject_id}"
+  # Exemple: feat(E1-002): configure postgresql - Refs #42
+  
+  # Types de commits autorisés
+  commit_types:
+    - feat      # Nouvelle fonctionnalité
+    - fix       # Correction de bug
+    - test      # Ajout/modif de tests
+    - docs      # Documentation
+    - refactor  # Refactoring
+    - chore     # Maintenance
+    - style     # Formatting
+
+# Équipe
+team:
+  max_tickets_per_dev: 1  # Un seul ticket à la fois par dev
+  
+  # Liste des développeurs actifs
+  developers:
+    - id: "alice"
+      name: "Alice Dupont"
+      role: "Tech Lead"
+      slack: "@alice"
+      
+    - id: "bob"
+      name: "Bob Martin"
+      role: "Dev Senior"
+      slack: "@bob"
+      
+    - id: "charlie"
+      name: "Charlie Durand"
+      role: "Développeur"
+      slack: "@charlie"
+
+# Règles Claude Code
+claude:
+  # Fichiers que Claude doit toujours lire
+  context_files:
+    - "CLAUDE.md"
+    - "team/devs/{dev_id}.yaml"
+    - "team/rules/code-standards.md"
+    
+  # Fichiers à ne jamais modifier
+  protected_files:
+    - "team/config.yaml"
+    - "team/tickets/completed.yaml"
+    - ".env"
+    - "*.secret"
+
+# Statuts des tickets
+ticket_statuses:
+  - NEW           # Nouveau, pas commencé
+  - READY         # Prêt (dépendances OK)
+  - IN_PROGRESS   # En cours de dev
+  - IN_REVIEW     # PR ouverte, en review
+  - CLOSED        # Terminé et mergé
+  - BLOCKED       # Bloqué par une dépendance
+
+# Hooks (scripts à exécuter)
+hooks:
+  before_ticket:
+    - "git checkout develop"
+    - "git pull origin develop"
+    - "check-dependencies.sh"
+    
+  after_ticket:
+    - "update-current.sh"
+    - "git add team/"
+    - "git commit -m 'chore: update ticket status'"

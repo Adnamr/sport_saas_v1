@@ -1,0 +1,121 @@
+# ═══════════════════════════════════════════════════════════════════
+# FEATURE E1: Module Configuration
+# ═══════════════════════════════════════════════════════════════════
+# Généré depuis OpenProject le 2025-12-17 16:50
+# Tickets: 5 | Estimation: 13h (~1 jours)
+
+feature:
+  id: "E1"
+  name: "Module Configuration"
+  description: |
+    Feature regroupant 5 tickets de l'epic E1.
+    Modules concernés: app, common, config
+  
+  priority: "high"
+  estimated_days: 1
+  status: "todo"
+
+# ═══════════════════════════════════════════════════════════════════
+# TICKETS INCLUS
+# ═══════════════════════════════════════════════════════════════════
+
+tickets:
+
+  - id: "E1-001"
+    title: "Setup Spring Boot"
+    module: "app"
+    priority: "high"
+    estimated_hours: 3
+    sprint: "Sprint 1"
+    status: "new"
+    acceptance_criteria:
+      - "Projet Maven multi-modules initialisé"
+      - "Structure de dossiers conforme à l'architecture"
+      - "Configuration Spring Boot de base fonctionnelle"
+      - "Application démarre sans erreur"
+      - "**Module:** app, common"
+
+  - id: "E1-002"
+    title: "PostgreSQL et Flyway"
+    module: "config"
+    priority: "high"
+    estimated_hours: 3
+    sprint: "Sprint 1"
+    status: "new"
+    acceptance_criteria:
+      - "Connexion PostgreSQL fonctionnelle"
+      - "Flyway configuré et exécute les migrations"
+      - "Script de création de la base initiale"
+      - "Configuration par environnement (dev, prod)"
+      - "**Module:** config"
+
+  - id: "E1-004"
+    title: "Module Common - Exceptions et Utils"
+    module: "common"
+    priority: "high"
+    estimated_hours: 3
+    sprint: "Sprint 1"
+    status: "new"
+    acceptance_criteria:
+      - "Hiérarchie d'exceptions métier (BusinessException, NotFoundException, etc.)"
+      - "GlobalExceptionHandler avec réponses JSON standardisées"
+      - "Classes utilitaires (DateUtils, StringUtils, etc.)"
+      - "DTOs communs (ApiResponse, PageResponse, ErrorResponse)"
+      - "**Module:** common"
+
+  - id: "E1-005"
+    title: "Configuration OpenAPI / Swagger"
+    module: "config"
+    priority: "medium"
+    estimated_hours: 2
+    sprint: "Sprint 1"
+    status: "new"
+    acceptance_criteria:
+      - "Swagger UI accessible (/swagger-ui.html)"
+      - "Documentation auto-générée des endpoints"
+      - "Configuration des security schemes (JWT)"
+      - "Groupes par module"
+      - "**Module:** config"
+
+  - id: "E1-006"
+    title: "Configuration des Logs structurés"
+    module: "config"
+    priority: "medium"
+    estimated_hours: 2
+    sprint: "Sprint 1"
+    status: "new"
+    acceptance_criteria:
+      - "Logs en JSON (Logback)"
+      - "Correlation ID pour traçabilité"
+      - "Niveaux de log par environnement"
+      - "Rotation des fichiers de log"
+      - "**Module:** config"
+
+# ═══════════════════════════════════════════════════════════════════
+# FRONTEND
+# ═══════════════════════════════════════════════════════════════════
+
+frontend:
+  module: "common"
+  pages:
+    - name: "ListPage"
+      route: "/common"
+      type: list
+    - name: "DetailPage"
+      route: "/common/:id"
+      type: detail
+    - name: "FormPage"
+      route: "/common/new"
+      type: form
+
+# ═══════════════════════════════════════════════════════════════════
+# NOTES
+# ═══════════════════════════════════════════════════════════════════
+
+notes: |
+  Epic E1 importé depuis OpenProject.
+  
+  Sprints concernés: Sprint 1
+  
+  Dépendances détectées:
+    - [E1-001] Setup Spring Boot

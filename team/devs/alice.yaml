@@ -1,0 +1,75 @@
+# 👤 Fichier Développeur - Alice
+
+# ═══════════════════════════════════════════════════════════════════
+#                    INFORMATIONS DÉVELOPPEUR
+# ═══════════════════════════════════════════════════════════════════
+
+dev:
+  id: "alice"
+  name: "Alice Dupont"
+  email: "alice@example.com"
+  slack: "@alice"
+  role: "Tech Lead"
+  joined_at: "2025-01-01"
+  
+  access:
+    github: true
+    openproject: true
+    slack: true
+    server_dev: true
+
+# ═══════════════════════════════════════════════════════════════════
+#                    TICKET EN COURS
+# ═══════════════════════════════════════════════════════════════════
+
+current_ticket:
+  ticket_id: "E1-001"
+  openproject_id: 1
+  title: "Setup Spring Boot"
+  branch: "feature/1-E1-001-spring-boot-setup"
+  started_at: "2025-01-15T09:00:00"
+  
+  # Module concerné
+  module: "app"
+  
+  # Critères d'acceptation
+  acceptance_criteria:
+    - "Projet Maven multi-modules initialisé"
+    - "Structure de dossiers conforme à l'architecture"
+    - "Configuration Spring Boot de base fonctionnelle"
+    - "Application démarre sans erreur"
+  
+  # Fichiers à créer/modifier
+  expected_files:
+    - "backend/pom.xml"
+    - "backend/app/pom.xml"
+    - "backend/app/src/main/java/com/sportsaas/Application.java"
+    - "backend/app/src/main/resources/application.yml"
+  
+  # Fichiers touchés pendant le dev
+  files_touched:
+    - "backend/pom.xml"
+  
+  # Notes personnelles
+  notes: |
+    - Commencé la structure Maven
+    - Prochaine étape: créer les modules
+
+# ═══════════════════════════════════════════════════════════════════
+#                    PRÉFÉRENCES CLAUDE CODE
+# ═══════════════════════════════════════════════════════════════════
+
+claude_preferences:
+  explanation_level: "normal"
+  auto_generate_tests: true
+  
+  code_style:
+    use_lombok: true
+    use_records_for_dto: true
+    max_line_length: 120
+
+# ═══════════════════════════════════════════════════════════════════
+#                    HISTORIQUE
+# ═══════════════════════════════════════════════════════════════════
+
+history: []

@@ -1,0 +1,137 @@
+# ═══════════════════════════════════════════════════════════════════
+# FEATURE TEMPLATE
+# Copier ce fichier et renommer: my-feature.yaml
+# ═══════════════════════════════════════════════════════════════════
+
+feature:
+  id: "F-XXX"
+  name: "Nom de la Feature"
+  description: |
+    Description complète de la feature.
+    Contexte métier et objectifs.
+  
+  # Priorité et estimation
+  priority: "high"  # high, medium, low
+  estimated_days: 2
+  
+# ═══════════════════════════════════════════════════════════════════
+# MODÈLE DE DONNÉES
+# ═══════════════════════════════════════════════════════════════════
+
+entities:
+  
+  # Exemple d'entité
+  # EntityName:
+  #   description: "Description de l'entité"
+  #   fields:
+  #     - name: fieldName
+  #       type: String | Integer | Long | BigDecimal | Boolean | LocalDate | LocalDateTime
+  #       required: true | false
+  #       unique: true | false
+  #       validation: "règles de validation"
+  #       default: "valeur par défaut"
+  #     
+  #     - name: relationField
+  #       type: OtherEntity
+  #       relation: ManyToOne | OneToMany | ManyToMany | OneToOne
+  #       
+  #   indexes:
+  #     - [field1]
+  #     - [field1, field2]  # Index composite
+
+# ═══════════════════════════════════════════════════════════════════
+# API REST
+# ═══════════════════════════════════════════════════════════════════
+
+api:
+  base_path: "/api/resource"
+  
+  endpoints:
+    # - method: GET | POST | PUT | PATCH | DELETE
+    #   path: "/api/resource"
+    #   description: "Description de l'endpoint"
+    #   params:
+    #     - name: param1
+    #       type: String
+    #       required: false
+    #       description: "Description"
+    #   request_body: "DTO name or null"
+    #   response: "DTO name"
+    #   roles: [ADMIN, MANAGER, USER]  # ou [] pour public
+    #   pagination: true | false
+
+# ═══════════════════════════════════════════════════════════════════
+# FRONTEND
+# ═══════════════════════════════════════════════════════════════════
+
+frontend:
+  module: "resource"  # Nom du module/dossier
+  
+  pages:
+    # - name: "PageName"
+    #   route: "/path"
+    #   type: list | detail | form | dashboard
+    #   features:
+    #     - search
+    #     - filter
+    #     - pagination
+    #     - sort
+    #     - export
+    #     - create-button
+    #     - edit-button
+    #     - delete-button
+
+  components:
+    # Composants réutilisables spécifiques à cette feature
+    # - name: "ComponentName"
+    #   description: "Description"
+
+# ═══════════════════════════════════════════════════════════════════
+# RÈGLES MÉTIER
+# ═══════════════════════════════════════════════════════════════════
+
+business_rules:
+  # - id: "BR-001"
+  #   description: "Description de la règle"
+  #   condition: "Quand..."
+  #   action: "Alors..."
+
+# ═══════════════════════════════════════════════════════════════════
+# CRITÈRES D'ACCEPTANCE
+# ═══════════════════════════════════════════════════════════════════
+
+acceptance_criteria:
+  # - "En tant que [rôle], je peux [action] afin de [bénéfice]"
+  # - "Le système doit [comportement attendu]"
+  # - "Validation: [règle de validation]"
+
+# ═══════════════════════════════════════════════════════════════════
+# TESTS REQUIS
+# ═══════════════════════════════════════════════════════════════════
+
+tests:
+  unit:
+    # - "Service: test création avec données valides"
+    # - "Service: test validation données invalides"
+  
+  integration:
+    # - "API: GET /resource retourne liste paginée"
+    # - "API: POST /resource crée une ressource"
+  
+  e2e:
+    # - "User peut créer une ressource via le formulaire"
+
+# ═══════════════════════════════════════════════════════════════════
+# DÉPENDANCES
+# ═══════════════════════════════════════════════════════════════════
+
+dependencies:
+  features: []      # Features qui doivent être faites avant
+  external: []      # Services externes (Stripe, S3, etc.)
+
+# ═══════════════════════════════════════════════════════════════════
+# NOTES
+# ═══════════════════════════════════════════════════════════════════
+
+notes: |
+  Notes additionnelles, décisions techniques, etc.

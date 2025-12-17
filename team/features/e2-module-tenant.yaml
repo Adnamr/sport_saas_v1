@@ -1,0 +1,236 @@
+# ═══════════════════════════════════════════════════════════════════
+# FEATURE E2: Module Tenant
+# ═══════════════════════════════════════════════════════════════════
+# Généré depuis OpenProject le 2025-12-17 16:50
+# Tickets: 7 | Estimation: 22h (~2 jours)
+
+feature:
+  id: "E2"
+  name: "Module Tenant"
+  description: |
+    Feature regroupant 7 tickets de l'epic E2.
+    Modules concernés: common, config, tenant
+  
+  priority: "high"
+  estimated_days: 2
+  status: "todo"
+
+# ═══════════════════════════════════════════════════════════════════
+# TICKETS INCLUS
+# ═══════════════════════════════════════════════════════════════════
+
+tickets:
+
+  - id: "E2-001"
+    title: "Modèle Tenant en base de données"
+    module: "tenant"
+    priority: "high"
+    estimated_hours: 3
+    sprint: "Sprint 2"
+    status: "new"
+    acceptance_criteria:
+      - "Entité Tenant (id, name, slug, status, settings, createdAt, updatedAt)"
+      - "Migration Flyway pour table tenants"
+      - "Repository TenantRepository"
+      - "Index sur slug (unique)"
+      - "**Module:** tenant"
+
+  - id: "E2-002"
+    title: "TenantContext et ThreadLocal"
+    module: "config"
+    priority: "high"
+    estimated_hours: 3
+    sprint: "Sprint 2"
+    status: "new"
+    acceptance_criteria:
+      - "Classe TenantContext avec get/set/clear"
+      - "TenantContextHolder thread-safe"
+      - "Nettoyage automatique en fin de requête"
+      - "Support async (@Async) avec propagation du contexte"
+      - "**Module:** config"
+
+  - id: "E2-003"
+    title: "TenantFilter - Résolution par Header"
+    module: "config"
+    priority: "high"
+    estimated_hours: 3
+    sprint: "Sprint 2"
+    status: "new"
+    acceptance_criteria:
+      - "Filter intercept toutes les requêtes"
+      - "Lecture header X-Tenant-Id"
+      - "Validation du tenant en base"
+      - "Erreur 400 si tenant manquant/invalide"
+      - "Exclusion des endpoints publics (/auth/**, /actuator/**)"
+
+  - id: "E2-004"
+    title: "Hibernate Filter pour isolation tenant"
+    module: "config"
+    priority: "high"
+    estimated_hours: 5
+    sprint: "Sprint 2"
+    status: "new"
+    acceptance_criteria:
+      - "Annotation @TenantEntity sur les entités métier"
+      - "Hibernate Filter tenantFilter avec condition tenant_id = :tenantId"
+      - "Activation automatique du filter par requête"
+      - "Tests d'isolation (tenant A ne voit pas données tenant B)"
+      - "**Module:** config"
+
+  - id: "E2-005"
+    title: "BaseEntity avec tenant_id"
+    module: "common"
+    priority: "high"
+    estimated_hours: 2
+    sprint: "Sprint 2"
+    status: "new"
+    acceptance_criteria:
+      - "Classe abstraite TenantAwareEntity"
+      - "Champs: id (UUID), tenantId (UUID), createdAt, updatedAt"
+      - "@PrePersist pour injection automatique du tenantId"
+      - "Validation du tenantId avant persist"
+      - "**Module:** common"
+
+  - id: "E2-006"
+    title: "Service TenantService"
+    module: "tenant"
+    priority: "high"
+    estimated_hours: 3
+    sprint: "Sprint 2"
+    status: "new"
+    acceptance_criteria:
+      - "CRUD complet pour Tenant"
+      - "Validation unicité du slug"
+      - "Activation/désactivation tenant"
+      - "Récupération tenant courant"
+      - "**Module:** tenant"
+
+  - id: "E2-007"
+    title: "API REST Tenant (Super Admin)"
+    module: "tenant"
+    priority: "high"
+    estimated_hours: 3
+    sprint: "Sprint 2"
+    status: "new"
+    acceptance_criteria:
+      - "GET /api/admin/tenants (liste paginée)"
+      - "POST /api/admin/tenants (création)"
+      - "GET /api/admin/tenants/{id}"
+      - "PUT /api/admin/tenants/{id}"
+      - "DELETE /api/admin/tenants/{id} (soft delete)"
+
+# ═══════════════════════════════════════════════════════════════════
+# ENTITÉS DÉTECTÉES
+# ═══════════════════════════════════════════════════════════════════
+
+entities:
+
+  Tenant:
+    description: "TODO: Décrire Tenant"
+    module: "common"
+    fields:
+      - name: id
+        type: UUID
+        generated: true
+      # TODO: Ajouter les champs
+
+  TenantContext:
+    description: "TODO: Décrire TenantContext"
+    module: "common"
+    fields:
+      - name: id
+        type: UUID
+        generated: true
+      # TODO: Ajouter les champs
+
+  abstraite:
+    description: "TODO: Décrire abstraite"
+    module: "common"
+    fields:
+      - name: id
+        type: UUID
+        generated: true
+      # TODO: Ajouter les champs
+
+  avec:
+    description: "TODO: Décrire avec"
+    module: "common"
+    fields:
+      - name: id
+        type: UUID
+        generated: true
+      # TODO: Ajouter les champs
+
+  sur:
+    description: "TODO: Décrire sur"
+    module: "common"
+    fields:
+      - name: id
+        type: UUID
+        generated: true
+      # TODO: Ajouter les champs
+
+  tenants:
+    description: "TODO: Décrire tenants"
+    module: "common"
+    fields:
+      - name: id
+        type: UUID
+        generated: true
+      # TODO: Ajouter les champs
+
+# ═══════════════════════════════════════════════════════════════════
+# API REST
+# ═══════════════════════════════════════════════════════════════════
+
+api:
+  module: "common"
+  endpoints:
+    - method: GET
+      path: "/api/admin/tenants"
+      description: "TODO"
+    - method: POST
+      path: "/api/admin/tenants"
+      description: "TODO"
+    - method: GET
+      path: "/api/admin/tenants/{id}"
+      description: "TODO"
+    - method: PUT
+      path: "/api/admin/tenants/{id}"
+      description: "TODO"
+    - method: DELETE
+      path: "/api/admin/tenants/{id}"
+      description: "TODO"
+
+# ═══════════════════════════════════════════════════════════════════
+# FRONTEND
+# ═══════════════════════════════════════════════════════════════════
+
+frontend:
+  module: "common"
+  pages:
+    - name: "ListPage"
+      route: "/common"
+      type: list
+    - name: "DetailPage"
+      route: "/common/:id"
+      type: detail
+    - name: "FormPage"
+      route: "/common/new"
+      type: form
+
+# ═══════════════════════════════════════════════════════════════════
+# NOTES
+# ═══════════════════════════════════════════════════════════════════
+
+notes: |
+  Epic E2 importé depuis OpenProject.
+  
+  Sprints concernés: Sprint 2
+  
+  Dépendances détectées:
+    - [E1-002] PostgreSQL et Flyway
+    - [E1-002] PostgreSQL et Flyway,[E1-004] Module Common - Exceptions et Utils
+    - [E2-001] Modèle Tenant en base de données
+    - [E2-002] TenantContext et ThreadLocal
+    - [E2-002] TenantContext et ThreadLocal,[E2-005] BaseEntity avec tenant_id

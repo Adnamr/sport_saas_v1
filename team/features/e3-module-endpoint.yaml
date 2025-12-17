@@ -1,0 +1,293 @@
+# ═══════════════════════════════════════════════════════════════════
+# FEATURE E3: Module Endpoint
+# ═══════════════════════════════════════════════════════════════════
+# Généré depuis OpenProject le 2025-12-17 16:50
+# Tickets: 12 | Estimation: 39h (~4 jours)
+
+feature:
+  id: "E3"
+  name: "Module Endpoint"
+  description: |
+    Feature regroupant 12 tickets de l'epic E3.
+    Modules concernés: auth, config
+  
+  priority: "high"
+  estimated_days: 4
+  status: "todo"
+
+# ═══════════════════════════════════════════════════════════════════
+# TICKETS INCLUS
+# ═══════════════════════════════════════════════════════════════════
+
+tickets:
+
+  - id: "E3-001"
+    title: "Modèle User en base de données"
+    module: "auth"
+    priority: "high"
+    estimated_hours: 3
+    sprint: "Sprint 3"
+    status: "new"
+    acceptance_criteria:
+      - "Entité User (id, tenantId, email, password, firstName, lastName, role, status)"
+      - "Migration Flyway"
+      - "Index (tenant_id, email) unique"
+      - "Enum UserRole (SUPER_ADMIN, TENANT_ADMIN, EMPLOYEE, CUSTOMER)"
+      - "Enum UserStatus (ACTIVE, INACTIVE, PENDING_VERIFICATION)"
+
+  - id: "E3-002"
+    title: "Configuration Spring Security"
+    module: "config"
+    priority: "high"
+    estimated_hours: 5
+    sprint: "Sprint 3"
+    status: "new"
+    acceptance_criteria:
+      - "SecurityFilterChain configuré"
+      - "Stateless session (pas de cookie)"
+      - "Endpoints publics définis (/auth/**, /actuator/health)"
+      - "CORS configuré"
+      - "Password encoder BCrypt"
+
+  - id: "E3-003"
+    title: "Génération et validation JWT"
+    module: "auth"
+    priority: "high"
+    estimated_hours: 5
+    sprint: "Sprint 3"
+    status: "new"
+    acceptance_criteria:
+      - "JwtService avec génération access token (15 min)"
+      - "Génération refresh token (7 jours)"
+      - "Validation et parsing des tokens"
+      - "Claims: userId, tenantId, role, email"
+      - "Gestion expiration et refresh"
+
+  - id: "E3-004"
+    title: "JwtAuthenticationFilter"
+    module: "config"
+    priority: "high"
+    estimated_hours: 3
+    sprint: "Sprint 3"
+    status: "new"
+    acceptance_criteria:
+      - "Extraction token du header Authorization Bearer"
+      - "Validation du token"
+      - "Injection du SecurityContext"
+      - "Injection du TenantContext depuis le token"
+      - "**Module:** config"
+
+  - id: "E3-005"
+    title: "Endpoint Login"
+    module: "auth"
+    priority: "high"
+    estimated_hours: 3
+    sprint: "Sprint 3"
+    status: "new"
+    acceptance_criteria:
+      - "POST /api/auth/login"
+      - "Validation email/password"
+      - "Retourne access_token et refresh_token"
+      - "Gestion des erreurs (credentials invalides, compte inactif)"
+      - "Rate limiting (5 tentatives / minute)"
+
+  - id: "E3-006"
+    title: "Endpoint Register"
+    module: "auth"
+    priority: "high"
+    estimated_hours: 5
+    sprint: "Sprint 3"
+    status: "new"
+    acceptance_criteria:
+      - "POST /api/auth/register"
+      - "Validation des champs (email format, password strength)"
+      - "Vérification unicité email par tenant"
+      - "Hash du password"
+      - "Création user avec status PENDING_VERIFICATION"
+
+  - id: "E3-007"
+    title: "Endpoint Refresh Token"
+    module: "auth"
+    priority: "high"
+    estimated_hours: 2
+    sprint: "Sprint 3"
+    status: "new"
+    acceptance_criteria:
+      - "POST /api/auth/refresh"
+      - "Validation du refresh token"
+      - "Génération nouveau access token"
+      - "Rotation optionnelle du refresh token"
+      - "**Module:** auth"
+
+  - id: "E3-009"
+    title: "Forgot Password - Demande de reset"
+    module: "auth"
+    priority: "medium"
+    estimated_hours: 3
+    sprint: "Sprint 3"
+    status: "new"
+    acceptance_criteria:
+      - "POST /api/auth/forgot-password"
+      - "Génération token reset (UUID, expiration 1h)"
+      - "Stockage en base (table password_reset_tokens)"
+      - "Déclenchement event PasswordResetRequestedEvent"
+      - "Réponse générique (pas d'indication si email existe)"
+
+  - id: "E3-010"
+    title: "Reset Password - Nouveau mot de passe"
+    module: "auth"
+    priority: "medium"
+    estimated_hours: 3
+    sprint: "Sprint 3"
+    status: "new"
+    acceptance_criteria:
+      - "POST /api/auth/reset-password"
+      - "Validation du token"
+      - "Validation nouveau password"
+      - "Mise à jour password hashé"
+      - "Invalidation du token utilisé"
+
+  - id: "E3-011"
+    title: "Vérification Email"
+    module: "auth"
+    priority: "medium"
+    estimated_hours: 3
+    sprint: "Sprint 3"
+    status: "new"
+    acceptance_criteria:
+      - "GET /api/auth/verify-email?token=xxx"
+      - "Validation du token"
+      - "Mise à jour status user -> ACTIVE"
+      - "Invalidation du token"
+      - "**Module:** auth"
+
+  - id: "E3-012"
+    title: "Endpoint Get Current User"
+    module: "auth"
+    priority: "high"
+    estimated_hours: 1
+    sprint: "Sprint 3"
+    status: "new"
+    acceptance_criteria:
+      - "GET /api/auth/me"
+      - "Retourne UserDTO (sans password)"
+      - "Nécessite authentification"
+      - "**Module:** auth"
+
+  - id: "E3-013"
+    title: "RBAC - Annotations et vérifications"
+    module: "config"
+    priority: "high"
+    estimated_hours: 3
+    sprint: "Sprint 3"
+    status: "new"
+    acceptance_criteria:
+      - "@PreAuthorize fonctionnel"
+      - "Expressions: hasRole('TENANT_ADMIN'), hasAnyRole(...)"
+      - "Custom expression pour vérifier tenant ownership"
+      - "Tests unitaires RBAC"
+      - "**Module:** config"
+
+# ═══════════════════════════════════════════════════════════════════
+# ENTITÉS DÉTECTÉES
+# ═══════════════════════════════════════════════════════════════════
+
+entities:
+
+  Stock:
+    description: "TODO: Décrire Stock"
+    module: "auth"
+    fields:
+      - name: id
+        type: UUID
+        generated: true
+      # TODO: Ajouter les champs
+
+  Tenant:
+    description: "TODO: Décrire Tenant"
+    module: "auth"
+    fields:
+      - name: id
+        type: UUID
+        generated: true
+      # TODO: Ajouter les champs
+
+  User:
+    description: "TODO: Décrire User"
+    module: "auth"
+    fields:
+      - name: id
+        type: UUID
+        generated: true
+      # TODO: Ajouter les champs
+
+  password_reset_tokens:
+    description: "TODO: Décrire password_reset_tokens"
+    module: "auth"
+    fields:
+      - name: id
+        type: UUID
+        generated: true
+      # TODO: Ajouter les champs
+
+# ═══════════════════════════════════════════════════════════════════
+# API REST
+# ═══════════════════════════════════════════════════════════════════
+
+api:
+  module: "auth"
+  endpoints:
+    - method: POST
+      path: "/api/auth/login"
+      description: "TODO"
+    - method: POST
+      path: "/api/auth/register"
+      description: "TODO"
+    - method: POST
+      path: "/api/auth/refresh"
+      description: "TODO"
+    - method: GET
+      path: "/api/auth/me"
+      description: "TODO"
+    - method: POST
+      path: "/api/auth/forgot"
+      description: "TODO"
+    - method: POST
+      path: "/api/auth/reset"
+      description: "TODO"
+    - method: GET
+      path: "/api/auth/verify"
+      description: "TODO"
+
+# ═══════════════════════════════════════════════════════════════════
+# FRONTEND
+# ═══════════════════════════════════════════════════════════════════
+
+frontend:
+  module: "auth"
+  pages:
+    - name: "ListPage"
+      route: "/auth"
+      type: list
+    - name: "DetailPage"
+      route: "/auth/:id"
+      type: detail
+    - name: "FormPage"
+      route: "/auth/new"
+      type: form
+
+# ═══════════════════════════════════════════════════════════════════
+# NOTES
+# ═══════════════════════════════════════════════════════════════════
+
+notes: |
+  Epic E3 importé depuis OpenProject.
+  
+  Sprints concernés: Sprint 3
+  
+  Dépendances détectées:
+    - [E2-005] BaseEntity avec tenant_id
+    - [E3-001] Modèle User en base de données
+    - [E3-002] Configuration Spring Security
+    - [E3-002] Configuration Spring Security,[E3-003] Génération et validation JWT
+    - [E3-004] JwtAuthenticationFilter
