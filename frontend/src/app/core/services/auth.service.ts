@@ -1,36 +1,9 @@
 import { Injectable, signal, computed } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
-import { Observable, tap, catchError, throwError } from 'rxjs';
+import { Observable, tap, catchError, throwError, take, finalize } from 'rxjs';
+import { User, LoginRequest, LoginResponse, RegisterRequest } from '@core/models/auth.model';
 import { environment } from '@env/environment';
-
-export interface User {
-  id: string;
-  email: string;
-  firstName: string;
-  lastName: string;
-  role: 'SUPER_ADMIN' | 'TENANT_ADMIN' | 'EMPLOYEE' | 'CUSTOMER';
-  tenantId: string;
-}
-
-export interface LoginRequest {
-  email: string;
-  password: string;
-}
-
-export interface LoginResponse {
-  accessToken: string;
-  refreshToken: string;
-  user: User;
-}
-
-export interface RegisterRequest {
-  email: string;
-  password: string;
-  firstName: string;
-  lastName: string;
-  tenantId?: string;
-}
 
 @Injectable({
   providedIn: 'root'
@@ -87,9 +60,10 @@ export class AuthService {
   }
 
   logout(): void {
-    this.http.post(`${this.apiUrl}/logout`, {}).subscribe({
-      complete: () => this.clearAuth()
-    });
+    this.http.post(`${this.apiUrl}/logout`, {}).pipe(
+      take(1),
+      finalize(() => this.clearAuth())
+    ).subscribe();
   }
 
   refreshToken(): Observable<LoginResponse> {
