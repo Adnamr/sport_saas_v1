@@ -1,6 +1,8 @@
 package com.sportsaas.auth.domain.service;
 
+import com.sportsaas.auth.api.dto.UserStatisticsResponse;
 import com.sportsaas.auth.domain.entity.User;
+import com.sportsaas.auth.domain.enums.UserRole;
 import com.sportsaas.auth.domain.enums.UserStatus;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -17,6 +19,8 @@ public interface UserService {
 
     User update(UUID id, User user);
 
+    User adminUpdate(UUID id, User user);
+
     Optional<User> findById(UUID id);
 
     Optional<User> findByEmail(String email);
@@ -26,6 +30,8 @@ public interface UserService {
     Page<User> findByTenantId(UUID tenantId, Pageable pageable);
 
     Page<User> findByTenantIdAndStatus(UUID tenantId, UserStatus status, Pageable pageable);
+
+    Page<User> findByTenantIdAndRole(UUID tenantId, UserRole role, Pageable pageable);
 
     Page<User> searchByTenantId(UUID tenantId, String search, Pageable pageable);
 
@@ -39,9 +45,15 @@ public interface UserService {
 
     User unlock(UUID id);
 
+    User assignRole(UUID id, UserRole role);
+
+    User resetPassword(UUID id, String encodedPassword);
+
     void delete(UUID id);
 
     long countByTenantId(UUID tenantId);
+
+    UserStatisticsResponse getStatistics(UUID tenantId);
 
     void updateLastLogin(UUID userId);
 
