@@ -14,7 +14,7 @@ feature:
   
   priority: "medium"
   estimated_days: 1
-  status: "todo"
+  status: "done"
 
 # ═══════════════════════════════════════════════════════════════════
 # MODÈLE DE DONNÉES
