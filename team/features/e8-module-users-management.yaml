@@ -1,0 +1,48 @@
+# ═══════════════════════════════════════════════════════════════════
+# FEATURE: [E8] Module Users Management
+# ═══════════════════════════════════════════════════════════════════
+# Importé depuis OpenProject #243
+
+feature:
+  id: "OP-243"
+  openproject_id: 243
+  name: "[E8] Module Users Management"
+  description: |
+    **Feature E8**
+
+2 tickets - Estimation: 8h
+  
+  priority: "medium"
+  estimated_days: 1
+  status: "todo"
+
+# ═══════════════════════════════════════════════════════════════════
+# MODÈLE DE DONNÉES
+# ═══════════════════════════════════════════════════════════════════
+# TODO: Définir les entités
+
+entities: {}
+
+# ═══════════════════════════════════════════════════════════════════
+# API REST
+# ═══════════════════════════════════════════════════════════════════
+# TODO: Définir les endpoints
+
+api:
+  endpoints: []
+
+# ═══════════════════════════════════════════════════════════════════
+# FRONTEND
+# ═══════════════════════════════════════════════════════════════════
+# TODO: Définir les pages
+
+frontend:
+  pages: []
+
+# ═══════════════════════════════════════════════════════════════════
+# NOTES
+# ═══════════════════════════════════════════════════════════════════
+
+notes: |
+  Importé depuis OpenProject le 2025-12-17
+  URL: https://aam.openproject.com/work_packages/243

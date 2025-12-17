@@ -1,0 +1,803 @@
+# ═══════════════════════════════════════════════════════════════════
+# TICKETS - Synchronisé depuis OpenProject
+# ═══════════════════════════════════════════════════════════════════
+# 
+# ⚠️  Ce fichier est généré automatiquement
+# Dernière sync: 
+# 2025-12-17 19:23:44
+#
+# ═══════════════════════════════════════════════════════════════════
+
+tickets:
+
+  - id: "OP-182"
+    openproject_id: 182
+    title: "[E1-001] Setup Spring Boot"
+    type: "1"
+    priority: "medium"
+    estimated_hours: 3
+    status: "done"
+    assignee: null
+    description: |
+      **Module:** app
+
+  - id: "OP-183"
+    openproject_id: 183
+    title: "[E1-002] PostgreSQL et Flyway"
+    type: "1"
+    priority: "medium"
+    estimated_hours: 3
+    status: "done"
+    assignee: null
+    description: |
+      **Module:** config
+
+  - id: "OP-184"
+    openproject_id: 184
+    title: "[E1-004] Module Common - Exceptions et Utils"
+    type: "1"
+    priority: "medium"
+    estimated_hours: 3
+    status: "done"
+    assignee: null
+    description: |
+      **Module:** common
+
+  - id: "OP-185"
+    openproject_id: 185
+    title: "[E1-005] Configuration Swagger/OpenAPI"
+    type: "1"
+    priority: "medium"
+    estimated_hours: 2
+    status: "done"
+    assignee: null
+    description: |
+      **Module:** config
+
+  - id: "OP-186"
+    openproject_id: 186
+    title: "[E1-006] Tests de base"
+    type: "1"
+    priority: "medium"
+    estimated_hours: 2
+    status: "done"
+    assignee: null
+    description: |
+      **Module:** app
+
+  - id: "OP-188"
+    openproject_id: 188
+    title: "[E2-001] Entit� Tenant"
+    type: "1"
+    priority: "medium"
+    estimated_hours: 3
+    status: "todo"
+    assignee: null
+    description: |
+      **Module:** tenant
+
+  - id: "OP-189"
+    openproject_id: 189
+    title: "[E2-002] TenantContext et ThreadLocal"
+    type: "1"
+    priority: "medium"
+    estimated_hours: 3
+    status: "todo"
+    assignee: null
+    description: |
+      **Module:** tenant
+
+  - id: "OP-190"
+    openproject_id: 190
+    title: "[E2-003] TenantFilter - Header X-Tenant-ID"
+    type: "1"
+    priority: "medium"
+    estimated_hours: 3
+    status: "todo"
+    assignee: null
+    description: |
+      **Module:** tenant
+
+  - id: "OP-191"
+    openproject_id: 191
+    title: "[E2-004] BaseEntity avec tenantId"
+    type: "1"
+    priority: "medium"
+    estimated_hours: 2
+    status: "todo"
+    assignee: null
+    description: |
+      **Module:** common
+
+  - id: "OP-192"
+    openproject_id: 192
+    title: "[E2-005] TenantRepository et Service"
+    type: "1"
+    priority: "medium"
+    estimated_hours: 4
+    status: "todo"
+    assignee: null
+    description: |
+      **Module:** tenant
+
+  - id: "OP-193"
+    openproject_id: 193
+    title: "[E2-006] API REST Tenant"
+    type: "1"
+    priority: "medium"
+    estimated_hours: 4
+    status: "todo"
+    assignee: null
+    description: |
+      **Module:** tenant
+
+  - id: "OP-194"
+    openproject_id: 194
+    title: "[E2-007] Tests Multi-tenant"
+    type: "1"
+    priority: "medium"
+    estimated_hours: 3
+    status: "todo"
+    assignee: null
+    description: |
+      **Module:** tenant
+
+  - id: "OP-196"
+    openproject_id: 196
+    title: "[E3-001] Entit� User"
+    type: "1"
+    priority: "medium"
+    estimated_hours: 3
+    status: "todo"
+    assignee: null
+    description: |
+      **Module:** auth
+
+  - id: "OP-197"
+    openproject_id: 197
+    title: "[E3-002] Entit�s Role et Permission"
+    type: "1"
+    priority: "medium"
+    estimated_hours: 3
+    status: "todo"
+    assignee: null
+    description: |
+      **Module:** auth
+
+  - id: "OP-198"
+    openproject_id: 198
+    title: "[E3-003] UserRepository et Service"
+    type: "1"
+    priority: "medium"
+    estimated_hours: 4
+    status: "todo"
+    assignee: null
+    description: |
+      **Module:** auth
+
+  - id: "OP-199"
+    openproject_id: 199
+    title: "[E3-004] JWT Service"
+    type: "1"
+    priority: "medium"
+    estimated_hours: 4
+    status: "todo"
+    assignee: null
+    description: |
+      **Module:** auth
+
+  - id: "OP-200"
+    openproject_id: 200
+    title: "[E3-005] Security Config Spring"
+    type: "1"
+    priority: "medium"
+    estimated_hours: 4
+    status: "todo"
+    assignee: null
+    description: |
+      **Module:** config
+
+  - id: "OP-201"
+    openproject_id: 201
+    title: "[E3-006] Endpoint Login"
+    type: "1"
+    priority: "medium"
+    estimated_hours: 3
+    status: "todo"
+    assignee: null
+    description: |
+      **Module:** auth
+
+  - id: "OP-202"
+    openproject_id: 202
+    title: "[E3-007] Endpoint Register"
+    type: "1"
+    priority: "medium"
+    estimated_hours: 3
+    status: "todo"
+    assignee: null
+    description: |
+      **Module:** auth
+
+  - id: "OP-203"
+    openproject_id: 203
+    title: "[E3-008] Endpoint Refresh Token"
+    type: "1"
+    priority: "medium"
+    estimated_hours: 2
+    status: "todo"
+    assignee: null
+    description: |
+      **Module:** auth
+
+  - id: "OP-204"
+    openproject_id: 204
+    title: "[E3-009] Endpoint User Profile"
+    type: "1"
+    priority: "medium"
+    estimated_hours: 3
+    status: "todo"
+    assignee: null
+    description: |
+      **Module:** auth
+
+  - id: "OP-205"
+    openproject_id: 205
+    title: "[E3-010] RBAC Annotations"
+    type: "1"
+    priority: "medium"
+    estimated_hours: 3
+    status: "todo"
+    assignee: null
+    description: |
+      **Module:** auth
+
+  - id: "OP-206"
+    openproject_id: 206
+    title: "[E3-011] Password Reset Flow"
+    type: "1"
+    priority: "medium"
+    estimated_hours: 4
+    status: "todo"
+    assignee: null
+    description: |
+      **Module:** auth
+
+  - id: "OP-207"
+    openproject_id: 207
+    title: "[E3-012] Tests Auth"
+    type: "1"
+    priority: "medium"
+    estimated_hours: 3
+    status: "todo"
+    assignee: null
+    description: |
+      **Module:** auth
+
+  - id: "OP-209"
+    openproject_id: 209
+    title: "[E4-001] Mod�le Category"
+    type: "1"
+    priority: "medium"
+    estimated_hours: 3
+    status: "todo"
+    assignee: null
+    description: |
+      **Module:** catalog
+
+  - id: "OP-210"
+    openproject_id: 210
+    title: "[E4-002] Mod�le Product"
+    type: "1"
+    priority: "medium"
+    estimated_hours: 5
+    status: "todo"
+    assignee: null
+    description: |
+      **Module:** catalog
+
+  - id: "OP-211"
+    openproject_id: 211
+    title: "[E4-003] Mod�le ProductImage"
+    type: "1"
+    priority: "medium"
+    estimated_hours: 2
+    status: "todo"
+    assignee: null
+    description: |
+      **Module:** catalog
+
+  - id: "OP-212"
+    openproject_id: 212
+    title: "[E4-004] Mod�le ProductAttribute"
+    type: "1"
+    priority: "medium"
+    estimated_hours: 3
+    status: "todo"
+    assignee: null
+    description: |
+      **Module:** catalog
+
+  - id: "OP-213"
+    openproject_id: 213
+    title: "[E4-005] CategoryService et Repository"
+    type: "1"
+    priority: "medium"
+    estimated_hours: 4
+    status: "todo"
+    assignee: null
+    description: |
+      **Module:** catalog
+
+  - id: "OP-214"
+    openproject_id: 214
+    title: "[E4-006] ProductService et Repository"
+    type: "1"
+    priority: "medium"
+    estimated_hours: 5
+    status: "todo"
+    assignee: null
+    description: |
+      **Module:** catalog
+
+  - id: "OP-215"
+    openproject_id: 215
+    title: "[E4-007] API REST Catalog"
+    type: "1"
+    priority: "medium"
+    estimated_hours: 4
+    status: "todo"
+    assignee: null
+    description: |
+      **Module:** catalog
+
+  - id: "OP-216"
+    openproject_id: 216
+    title: "[E4-008] Tests Catalog"
+    type: "1"
+    priority: "medium"
+    estimated_hours: 3
+    status: "todo"
+    assignee: null
+    description: |
+      **Module:** catalog
+
+  - id: "OP-218"
+    openproject_id: 218
+    title: "[E5-001] Mod�le Warehouse"
+    type: "1"
+    priority: "medium"
+    estimated_hours: 3
+    status: "todo"
+    assignee: null
+    description: |
+      **Module:** inventory
+
+  - id: "OP-219"
+    openproject_id: 219
+    title: "[E5-002] Mod�le Stock"
+    type: "1"
+    priority: "medium"
+    estimated_hours: 3
+    status: "todo"
+    assignee: null
+    description: |
+      **Module:** inventory
+
+  - id: "OP-220"
+    openproject_id: 220
+    title: "[E5-003] Mod�le StockMovement"
+    type: "1"
+    priority: "medium"
+    estimated_hours: 3
+    status: "todo"
+    assignee: null
+    description: |
+      **Module:** inventory
+
+  - id: "OP-221"
+    openproject_id: 221
+    title: "[E5-004] WarehouseService"
+    type: "1"
+    priority: "medium"
+    estimated_hours: 4
+    status: "todo"
+    assignee: null
+    description: |
+      **Module:** inventory
+
+  - id: "OP-222"
+    openproject_id: 222
+    title: "[E5-005] StockService"
+    type: "1"
+    priority: "medium"
+    estimated_hours: 5
+    status: "todo"
+    assignee: null
+    description: |
+      **Module:** inventory
+
+  - id: "OP-223"
+    openproject_id: 223
+    title: "[E5-006] StockMovementService"
+    type: "1"
+    priority: "medium"
+    estimated_hours: 4
+    status: "todo"
+    assignee: null
+    description: |
+      **Module:** inventory
+
+  - id: "OP-224"
+    openproject_id: 224
+    title: "[E5-007] API REST Inventory"
+    type: "1"
+    priority: "medium"
+    estimated_hours: 4
+    status: "todo"
+    assignee: null
+    description: |
+      **Module:** inventory
+
+  - id: "OP-225"
+    openproject_id: 225
+    title: "[E5-008] Tests Inventory"
+    type: "1"
+    priority: "medium"
+    estimated_hours: 2
+    status: "todo"
+    assignee: null
+    description: |
+      **Module:** inventory
+
+  - id: "OP-227"
+    openproject_id: 227
+    title: "[E6-001] Mod�le Cart et CartItem"
+    type: "1"
+    priority: "medium"
+    estimated_hours: 4
+    status: "todo"
+    assignee: null
+    description: |
+      **Module:** order
+
+  - id: "OP-228"
+    openproject_id: 228
+    title: "[E6-002] Mod�le Order et OrderItem"
+    type: "1"
+    priority: "medium"
+    estimated_hours: 5
+    status: "todo"
+    assignee: null
+    description: |
+      **Module:** order
+
+  - id: "OP-229"
+    openproject_id: 229
+    title: "[E6-003] CartService"
+    type: "1"
+    priority: "medium"
+    estimated_hours: 5
+    status: "todo"
+    assignee: null
+    description: |
+      **Module:** order
+
+  - id: "OP-230"
+    openproject_id: 230
+    title: "[E6-004] OrderService"
+    type: "1"
+    priority: "medium"
+    estimated_hours: 6
+    status: "todo"
+    assignee: null
+    description: |
+      **Module:** order
+
+  - id: "OP-231"
+    openproject_id: 231
+    title: "[E6-005] Checkout Flow"
+    type: "1"
+    priority: "medium"
+    estimated_hours: 5
+    status: "todo"
+    assignee: null
+    description: |
+      **Module:** order
+
+  - id: "OP-232"
+    openproject_id: 232
+    title: "[E6-006] Order Status Workflow"
+    type: "1"
+    priority: "medium"
+    estimated_hours: 4
+    status: "todo"
+    assignee: null
+    description: |
+      **Module:** order
+
+  - id: "OP-233"
+    openproject_id: 233
+    title: "[E6-007] API REST Cart"
+    type: "1"
+    priority: "medium"
+    estimated_hours: 4
+    status: "todo"
+    assignee: null
+    description: |
+      **Module:** order
+
+  - id: "OP-234"
+    openproject_id: 234
+    title: "[E6-008] API REST Order"
+    type: "1"
+    priority: "medium"
+    estimated_hours: 4
+    status: "todo"
+    assignee: null
+    description: |
+      **Module:** order
+
+  - id: "OP-235"
+    openproject_id: 235
+    title: "[E6-009] Tests Order"
+    type: "1"
+    priority: "medium"
+    estimated_hours: 3
+    status: "todo"
+    assignee: null
+    description: |
+      **Module:** order
+
+  - id: "OP-237"
+    openproject_id: 237
+    title: "[E7-001] Mod�le Invoice"
+    type: "1"
+    priority: "medium"
+    estimated_hours: 4
+    status: "todo"
+    assignee: null
+    description: |
+      **Module:** billing
+
+  - id: "OP-238"
+    openproject_id: 238
+    title: "[E7-002] Mod�le Payment"
+    type: "1"
+    priority: "medium"
+    estimated_hours: 3
+    status: "todo"
+    assignee: null
+    description: |
+      **Module:** billing
+
+  - id: "OP-239"
+    openproject_id: 239
+    title: "[E7-003] InvoiceService"
+    type: "1"
+    priority: "medium"
+    estimated_hours: 5
+    status: "todo"
+    assignee: null
+    description: |
+      **Module:** billing
+
+  - id: "OP-240"
+    openproject_id: 240
+    title: "[E7-004] PaymentService"
+    type: "1"
+    priority: "medium"
+    estimated_hours: 4
+    status: "todo"
+    assignee: null
+    description: |
+      **Module:** billing
+
+  - id: "OP-241"
+    openproject_id: 241
+    title: "[E7-005] API REST Billing"
+    type: "1"
+    priority: "medium"
+    estimated_hours: 4
+    status: "todo"
+    assignee: null
+    description: |
+      **Module:** billing
+
+  - id: "OP-242"
+    openproject_id: 242
+    title: "[E7-006] Tests Billing"
+    type: "1"
+    priority: "medium"
+    estimated_hours: 2
+    status: "todo"
+    assignee: null
+    description: |
+      **Module:** billing
+
+  - id: "OP-244"
+    openproject_id: 244
+    title: "[E8-001] Admin User CRUD"
+    type: "1"
+    priority: "medium"
+    estimated_hours: 5
+    status: "todo"
+    assignee: null
+    description: |
+      **Module:** auth
+
+  - id: "OP-245"
+    openproject_id: 245
+    title: "[E8-002] User Import/Export"
+    type: "1"
+    priority: "medium"
+    estimated_hours: 3
+    status: "todo"
+    assignee: null
+    description: |
+      **Module:** auth
+
+  - id: "OP-247"
+    openproject_id: 247
+    title: "[E9-001] EmailService avec templates"
+    type: "1"
+    priority: "medium"
+    estimated_hours: 5
+    status: "todo"
+    assignee: null
+    description: |
+      **Module:** notification
+
+  - id: "OP-249"
+    openproject_id: 249
+    title: "[E11-001] Setup Angular 17"
+    type: "1"
+    priority: "medium"
+    estimated_hours: 4
+    status: "todo"
+    assignee: null
+    description: |
+      **Module:** frontend
+
+  - id: "OP-250"
+    openproject_id: 250
+    title: "[E11-002] Auth Module (Login, Register)"
+    type: "1"
+    priority: "medium"
+    estimated_hours: 6
+    status: "todo"
+    assignee: null
+    description: |
+      **Module:** frontend
+
+  - id: "OP-251"
+    openproject_id: 251
+    title: "[E11-003] Core Module (Guards, Interceptors)"
+    type: "1"
+    priority: "medium"
+    estimated_hours: 5
+    status: "todo"
+    assignee: null
+    description: |
+      **Module:** frontend
+
+  - id: "OP-252"
+    openproject_id: 252
+    title: "[E11-004] Shared Components"
+    type: "1"
+    priority: "medium"
+    estimated_hours: 6
+    status: "todo"
+    assignee: null
+    description: |
+      **Module:** frontend
+
+  - id: "OP-253"
+    openproject_id: 253
+    title: "[E11-005] Dashboard Page"
+    type: "1"
+    priority: "medium"
+    estimated_hours: 5
+    status: "todo"
+    assignee: null
+    description: |
+      **Module:** frontend
+
+  - id: "OP-254"
+    openproject_id: 254
+    title: "[E11-006] Catalog Module"
+    type: "1"
+    priority: "medium"
+    estimated_hours: 8
+    status: "todo"
+    assignee: null
+    description: |
+      **Module:** frontend
+
+  - id: "OP-255"
+    openproject_id: 255
+    title: "[E11-007] Inventory Module"
+    type: "1"
+    priority: "medium"
+    estimated_hours: 6
+    status: "todo"
+    assignee: null
+    description: |
+      **Module:** frontend
+
+  - id: "OP-256"
+    openproject_id: 256
+    title: "[E11-008] Orders Module"
+    type: "1"
+    priority: "medium"
+    estimated_hours: 8
+    status: "todo"
+    assignee: null
+    description: |
+      **Module:** frontend
+
+  - id: "OP-257"
+    openproject_id: 257
+    title: "[E11-009] Billing Module"
+    type: "1"
+    priority: "medium"
+    estimated_hours: 5
+    status: "todo"
+    assignee: null
+    description: |
+      **Module:** frontend
+
+  - id: "OP-258"
+    openproject_id: 258
+    title: "[E11-010] Settings Module"
+    type: "1"
+    priority: "medium"
+    estimated_hours: 3
+    status: "todo"
+    assignee: null
+    description: |
+      **Module:** frontend
+
+  - id: "OP-259"
+    openproject_id: 259
+    title: "[E11-011] Responsive Design"
+    type: "1"
+    priority: "medium"
+    estimated_hours: 2
+    status: "todo"
+    assignee: null
+    description: |
+      **Module:** frontend
+
+  - id: "OP-261"
+    openproject_id: 261
+    title: "[E12-001] Dockerfile Backend"
+    type: "1"
+    priority: "medium"
+    estimated_hours: 2
+    status: "todo"
+    assignee: null
+    description: |
+      **Module:** infra
+
+  - id: "OP-262"
+    openproject_id: 262
+    title: "[E12-002] Dockerfile Frontend"
+    type: "1"
+    priority: "medium"
+    estimated_hours: 2
+    status: "todo"
+    assignee: null
+    description: |
+      **Module:** infra
+
+  - id: "OP-263"
+    openproject_id: 263
+    title: "[E12-003] Docker Compose Production"
+    type: "1"
+    priority: "medium"
+    estimated_hours: 3
+    status: "todo"
+    assignee: null
+    description: |
+      **Module:** infra

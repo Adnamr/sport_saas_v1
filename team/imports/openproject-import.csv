@@ -1,0 +1,760 @@
+Subject,Type,Status,Priority,Assignee,Version,Estimated time,Description,Parent,Follows
+[E1-001] Setup Spring Boot,Task,New,High,,Sprint 1,3h,"**Description:**
+Créer le projet Spring Boot 3.x avec Java 17 et la structure modulaire de base.
+
+**Critères d'acceptation:**
+- [ ] Projet Maven multi-modules initialisé
+- [ ] Structure de dossiers conforme à l'architecture
+- [ ] Configuration Spring Boot de base fonctionnelle
+- [ ] Application démarre sans erreur
+
+**Module:** app, common",,
+[E1-002] PostgreSQL et Flyway,Task,New,High,,Sprint 1,3h,"**Description:**
+Configurer la connexion PostgreSQL et le système de migrations Flyway.
+
+**Critères d'acceptation:**
+- [ ] Connexion PostgreSQL fonctionnelle
+- [ ] Flyway configuré et exécute les migrations
+- [ ] Script de création de la base initiale
+- [ ] Configuration par environnement (dev, prod)
+
+**Module:** config",,[E1-001] Setup Spring Boot
+[E1-004] Module Common - Exceptions et Utils,Task,New,High,,Sprint 1,3h,"**Description:**
+Créer les classes utilitaires et la gestion globale des exceptions.
+
+**Critères d'acceptation:**
+- [ ] Hiérarchie d'exceptions métier (BusinessException, NotFoundException, etc.)
+- [ ] GlobalExceptionHandler avec réponses JSON standardisées
+- [ ] Classes utilitaires (DateUtils, StringUtils, etc.)
+- [ ] DTOs communs (ApiResponse, PageResponse, ErrorResponse)
+
+**Module:** common",,[E1-001] Setup Spring Boot
+[E1-005] Configuration OpenAPI / Swagger,Task,New,Medium,,Sprint 1,2h,"**Description:**
+Configurer la documentation API avec OpenAPI 3.
+
+**Critères d'acceptation:**
+- [ ] Swagger UI accessible (/swagger-ui.html)
+- [ ] Documentation auto-générée des endpoints
+- [ ] Configuration des security schemes (JWT)
+- [ ] Groupes par module
+
+**Module:** config",,[E1-001] Setup Spring Boot
+[E1-006] Configuration des Logs structurés,Task,New,Medium,,Sprint 1,2h,"**Description:**
+Configurer les logs en format JSON structuré.
+
+**Critères d'acceptation:**
+- [ ] Logs en JSON (Logback)
+- [ ] Correlation ID pour traçabilité
+- [ ] Niveaux de log par environnement
+- [ ] Rotation des fichiers de log
+
+**Module:** config",,[E1-001] Setup Spring Boot
+[E2-001] Modèle Tenant en base de données,Task,New,High,,Sprint 2,3h,"**Description:**
+Créer le modèle de données pour la gestion des tenants.
+
+**Critères d'acceptation:**
+- [ ] Entité Tenant (id, name, slug, status, settings, createdAt, updatedAt)
+- [ ] Migration Flyway pour table tenants
+- [ ] Repository TenantRepository
+- [ ] Index sur slug (unique)
+
+**Module:** tenant",,[E1-002] PostgreSQL et Flyway
+[E2-005] BaseEntity avec tenant_id,Task,New,High,,Sprint 2,2h,"**Description:**
+Créer la classe de base pour toutes les entités multi-tenant.
+
+**Critères d'acceptation:**
+- [ ] Classe abstraite TenantAwareEntity
+- [ ] Champs: id (UUID), tenantId (UUID), createdAt, updatedAt
+- [ ] @PrePersist pour injection automatique du tenantId
+- [ ] Validation du tenantId avant persist
+
+**Module:** common",,"[E1-002] PostgreSQL et Flyway,[E1-004] Module Common - Exceptions et Utils"
+[E2-002] TenantContext et ThreadLocal,Task,New,High,,Sprint 2,3h,"**Description:**
+Implémenter le contexte tenant avec ThreadLocal.
+
+**Critères d'acceptation:**
+- [ ] Classe TenantContext avec get/set/clear
+- [ ] TenantContextHolder thread-safe
+- [ ] Nettoyage automatique en fin de requête
+- [ ] Support async (@Async) avec propagation du contexte
+
+**Module:** config",,[E2-001] Modèle Tenant en base de données
+[E2-006] Service TenantService,Task,New,High,,Sprint 2,3h,"**Description:**
+Créer le service de gestion des tenants.
+
+**Critères d'acceptation:**
+- [ ] CRUD complet pour Tenant
+- [ ] Validation unicité du slug
+- [ ] Activation/désactivation tenant
+- [ ] Récupération tenant courant
+
+**Module:** tenant",,[E2-001] Modèle Tenant en base de données
+[E2-003] TenantFilter - Résolution par Header,Task,New,High,,Sprint 2,3h,"**Description:**
+Créer le filtre HTTP pour résoudre le tenant depuis le header X-Tenant-Id.
+
+**Critères d'acceptation:**
+- [ ] Filter intercept toutes les requêtes
+- [ ] Lecture header X-Tenant-Id
+- [ ] Validation du tenant en base
+- [ ] Erreur 400 si tenant manquant/invalide
+- [ ] Exclusion des endpoints publics (/auth/**, /actuator/**)
+
+**Module:** config",,[E2-002] TenantContext et ThreadLocal
+[E2-004] Hibernate Filter pour isolation tenant,Task,New,High,,Sprint 2,5h,"**Description:**
+Implémenter l'isolation automatique des données par tenant avec Hibernate Filter.
+
+**Critères d'acceptation:**
+- [ ] Annotation @TenantEntity sur les entités métier
+- [ ] Hibernate Filter tenantFilter avec condition tenant_id = :tenantId
+- [ ] Activation automatique du filter par requête
+- [ ] Tests d'isolation (tenant A ne voit pas données tenant B)
+
+**Module:** config",,"[E2-002] TenantContext et ThreadLocal,[E2-005] BaseEntity avec tenant_id"
+[E2-007] API REST Tenant (Super Admin),Task,New,High,,Sprint 2,3h,"**Description:**
+Exposer les endpoints REST pour la gestion des tenants (Super Admin uniquement).
+
+**Critères d'acceptation:**
+- [ ] GET /api/admin/tenants (liste paginée)
+- [ ] POST /api/admin/tenants (création)
+- [ ] GET /api/admin/tenants/{id}
+- [ ] PUT /api/admin/tenants/{id}
+- [ ] DELETE /api/admin/tenants/{id} (soft delete)
+- [ ] Sécurisation SUPER_ADMIN uniquement
+
+**Module:** tenant",,"[E2-006] Service TenantService,[E2-003] TenantFilter - Résolution par Header"
+[E3-001] Modèle User en base de données,Task,New,High,,Sprint 3,3h,"**Description:**
+Créer le modèle de données pour les utilisateurs.
+
+**Critères d'acceptation:**
+- [ ] Entité User (id, tenantId, email, password, firstName, lastName, role, status)
+- [ ] Migration Flyway
+- [ ] Index (tenant_id, email) unique
+- [ ] Enum UserRole (SUPER_ADMIN, TENANT_ADMIN, EMPLOYEE, CUSTOMER)
+- [ ] Enum UserStatus (ACTIVE, INACTIVE, PENDING_VERIFICATION)
+
+**Module:** auth",,[E2-005] BaseEntity avec tenant_id
+[E3-002] Configuration Spring Security,Task,New,High,,Sprint 3,5h,"**Description:**
+Configurer Spring Security avec JWT.
+
+**Critères d'acceptation:**
+- [ ] SecurityFilterChain configuré
+- [ ] Stateless session (pas de cookie)
+- [ ] Endpoints publics définis (/auth/**, /actuator/health)
+- [ ] CORS configuré
+- [ ] Password encoder BCrypt
+
+**Module:** config",,[E3-001] Modèle User en base de données
+[E3-003] Génération et validation JWT,Task,New,High,,Sprint 3,5h,"**Description:**
+Implémenter la génération et validation des tokens JWT.
+
+**Critères d'acceptation:**
+- [ ] JwtService avec génération access token (15 min)
+- [ ] Génération refresh token (7 jours)
+- [ ] Validation et parsing des tokens
+- [ ] Claims: userId, tenantId, role, email
+- [ ] Gestion expiration et refresh
+
+**Module:** auth",,[E3-001] Modèle User en base de données
+[E3-004] JwtAuthenticationFilter,Task,New,High,,Sprint 3,3h,"**Description:**
+Créer le filtre d'authentification JWT.
+
+**Critères d'acceptation:**
+- [ ] Extraction token du header Authorization Bearer
+- [ ] Validation du token
+- [ ] Injection du SecurityContext
+- [ ] Injection du TenantContext depuis le token
+
+**Module:** config",,"[E3-002] Configuration Spring Security,[E3-003] Génération et validation JWT"
+[E3-013] RBAC - Annotations et vérifications,Task,New,High,,Sprint 3,3h,"**Description:**
+Implémenter le contrôle d'accès basé sur les rôles.
+
+**Critères d'acceptation:**
+- [ ] @PreAuthorize fonctionnel
+- [ ] Expressions: hasRole('TENANT_ADMIN'), hasAnyRole(...)
+- [ ] Custom expression pour vérifier tenant ownership
+- [ ] Tests unitaires RBAC
+
+**Module:** config",,[E3-002] Configuration Spring Security
+[E3-005] Endpoint Login,Task,New,High,,Sprint 3,3h,"**Description:**
+Implémenter l'endpoint de connexion.
+
+**Critères d'acceptation:**
+- [ ] POST /api/auth/login
+- [ ] Validation email/password
+- [ ] Retourne access_token et refresh_token
+- [ ] Gestion des erreurs (credentials invalides, compte inactif)
+- [ ] Rate limiting (5 tentatives / minute)
+
+**Module:** auth",,[E3-004] JwtAuthenticationFilter
+[E3-006] Endpoint Register,Task,New,High,,Sprint 3,5h,"**Description:**
+Implémenter l'endpoint d'inscription.
+
+**Critères d'acceptation:**
+- [ ] POST /api/auth/register
+- [ ] Validation des champs (email format, password strength)
+- [ ] Vérification unicité email par tenant
+- [ ] Hash du password
+- [ ] Création user avec status PENDING_VERIFICATION
+- [ ] Déclenchement event UserRegisteredEvent
+
+**Module:** auth",,[E3-004] JwtAuthenticationFilter
+[E3-007] Endpoint Refresh Token,Task,New,High,,Sprint 3,2h,"**Description:**
+Implémenter le rafraîchissement du token.
+
+**Critères d'acceptation:**
+- [ ] POST /api/auth/refresh
+- [ ] Validation du refresh token
+- [ ] Génération nouveau access token
+- [ ] Rotation optionnelle du refresh token
+
+**Module:** auth",,[E3-004] JwtAuthenticationFilter
+[E3-012] Endpoint Get Current User,Task,New,High,,Sprint 3,1h,"**Description:**
+Endpoint pour récupérer les infos de l'utilisateur connecté.
+
+**Critères d'acceptation:**
+- [ ] GET /api/auth/me
+- [ ] Retourne UserDTO (sans password)
+- [ ] Nécessite authentification
+
+**Module:** auth",,[E3-004] JwtAuthenticationFilter
+[E3-009] Forgot Password - Demande de reset,Task,New,Medium,,Sprint 3,3h,"**Description:**
+Implémenter la demande de réinitialisation de mot de passe.
+
+**Critères d'acceptation:**
+- [ ] POST /api/auth/forgot-password
+- [ ] Génération token reset (UUID, expiration 1h)
+- [ ] Stockage en base (table password_reset_tokens)
+- [ ] Déclenchement event PasswordResetRequestedEvent
+- [ ] Réponse générique (pas d'indication si email existe)
+
+**Module:** auth",,[E3-005] Endpoint Login
+[E3-010] Reset Password - Nouveau mot de passe,Task,New,Medium,,Sprint 3,3h,"**Description:**
+Implémenter la réinitialisation du mot de passe.
+
+**Critères d'acceptation:**
+- [ ] POST /api/auth/reset-password
+- [ ] Validation du token
+- [ ] Validation nouveau password
+- [ ] Mise à jour password hashé
+- [ ] Invalidation du token utilisé
+
+**Module:** auth",,[E3-009] Forgot Password - Demande de reset
+[E3-011] Vérification Email,Task,New,Medium,,Sprint 3,3h,"**Description:**
+Implémenter la vérification de l'adresse email.
+
+**Critères d'acceptation:**
+- [ ] GET /api/auth/verify-email?token=xxx
+- [ ] Validation du token
+- [ ] Mise à jour status user -> ACTIVE
+- [ ] Invalidation du token
+
+**Module:** auth",,[E3-006] Endpoint Register
+[E4-001] Modèle Category,Task,New,High,,Sprint 4,3h,"**Description:**
+Créer le modèle de données pour les catégories de produits.
+
+**Critères d'acceptation:**
+- [ ] Entité Category (id, tenantId, name, slug, description, parentId, imageUrl, sortOrder, active)
+- [ ] Support hiérarchie (catégories parentes/enfants)
+- [ ] Migration Flyway
+- [ ] Index (tenant_id, slug) unique
+
+**Module:** catalog",,"[E2-005] BaseEntity avec tenant_id,[E3-013] RBAC - Annotations et vérifications"
+[E4-002] Modèle Product,Task,New,High,,Sprint 4,5h,"**Description:**
+Créer le modèle de données pour les produits.
+
+**Critères d'acceptation:**
+- [ ] Entité Product (id, tenantId, sku, name, description, categoryId, price, rentalPrice, status)
+- [ ] Enum ProductStatus (DRAFT, ACTIVE, ARCHIVED)
+- [ ] Enum ProductType (SALE, RENTAL, BOTH)
+- [ ] Migration Flyway
+- [ ] Index (tenant_id, sku) unique
+
+**Module:** catalog",,"[E2-005] BaseEntity avec tenant_id,[E3-013] RBAC - Annotations et vérifications"
+[E4-003] Modèle ProductImage,Task,New,Medium,,Sprint 4,2h,"**Description:**
+Créer le modèle pour les images produits.
+
+**Critères d'acceptation:**
+- [ ] Entité ProductImage (id, productId, url, altText, sortOrder, isPrimary)
+- [ ] Relation ManyToOne avec Product
+- [ ] Migration Flyway
+
+**Module:** catalog",,[E4-002] Modèle Product
+[E4-004] Modèle ProductAttribute,Task,New,Medium,,Sprint 4,3h,"**Description:**
+Créer le système d'attributs dynamiques pour les produits.
+
+**Critères d'acceptation:**
+- [ ] Entité AttributeDefinition (id, tenantId, name, type, options, required)
+- [ ] Entité ProductAttribute (id, productId, attributeDefinitionId, value)
+- [ ] Types supportés: STRING, NUMBER, BOOLEAN, SELECT, MULTI_SELECT
+- [ ] Migrations Flyway
+
+**Module:** catalog",,[E4-002] Modèle Product
+[E4-005] Service CategoryService,Task,New,High,,Sprint 4,3h,"**Description:**
+Créer le service de gestion des catégories.
+
+**Critères d'acceptation:**
+- [ ] CRUD complet
+- [ ] Récupération arborescence complète
+- [ ] Validation unicité slug par tenant
+- [ ] Réordonnancement (sortOrder)
+
+**Module:** catalog",,[E4-001] Modèle Category
+[E4-006] Service ProductService,Task,New,High,,Sprint 4,5h,"**Description:**
+Créer le service de gestion des produits.
+
+**Critères d'acceptation:**
+- [ ] CRUD complet
+- [ ] Recherche avec filtres (category, status, price range, keyword)
+- [ ] Pagination et tri
+- [ ] Gestion des images
+- [ ] Gestion des attributs dynamiques
+
+**Module:** catalog",,"[E4-002] Modèle Product,[E4-003] Modèle ProductImage"
+[E4-007] API REST Categories,Task,New,High,,Sprint 4,3h,"**Description:**
+Exposer les endpoints REST pour les catégories.
+
+**Critères d'acceptation:**
+- [ ] GET /api/categories (liste avec arborescence)
+- [ ] POST /api/categories (TENANT_ADMIN+)
+- [ ] GET /api/categories/{id}
+- [ ] PUT /api/categories/{id}
+- [ ] DELETE /api/categories/{id}
+- [ ] GET /api/categories/{id}/products
+
+**Module:** catalog",,[E4-005] Service CategoryService
+[E4-008] API REST Products,Task,New,High,,Sprint 4,5h,"**Description:**
+Exposer les endpoints REST pour les produits.
+
+**Critères d'acceptation:**
+- [ ] GET /api/products (liste paginée avec filtres)
+- [ ] POST /api/products (TENANT_ADMIN+)
+- [ ] GET /api/products/{id}
+- [ ] PUT /api/products/{id}
+- [ ] DELETE /api/products/{id} (soft delete)
+- [ ] POST /api/products/{id}/images
+- [ ] PUT /api/products/{id}/attributes
+
+**Module:** catalog",,[E4-006] Service ProductService
+[E5-001] Modèle Warehouse,Task,New,High,,Sprint 5,2h,"**Description:**
+Créer le modèle de données pour les entrepôts.
+
+**Critères d'acceptation:**
+- [ ] Entité Warehouse (id, tenantId, name, address, isDefault, active)
+- [ ] Migration Flyway
+- [ ] Un entrepôt par défaut par tenant
+
+**Module:** inventory",,[E2-005] BaseEntity avec tenant_id
+[E5-002] Modèle Stock,Task,New,High,,Sprint 5,3h,"**Description:**
+Créer le modèle de données pour le stock.
+
+**Critères d'acceptation:**
+- [ ] Entité Stock (id, tenantId, productId, warehouseId, quantity, reservedQuantity, alertThreshold)
+- [ ] Index unique (tenant_id, product_id, warehouse_id)
+- [ ] Migration Flyway
+- [ ] Contrainte quantity >= 0
+
+**Module:** inventory",,"[E4-002] Modèle Product,[E5-001] Modèle Warehouse"
+[E5-003] Modèle StockMovement,Task,New,High,,Sprint 5,3h,"**Description:**
+Créer le modèle pour l'historique des mouvements de stock.
+
+**Critères d'acceptation:**
+- [ ] Entité StockMovement (id, tenantId, stockId, type, quantity, reason, reference, userId, createdAt)
+- [ ] Enum MovementType (IN, OUT, ADJUSTMENT, RESERVATION, RELEASE)
+- [ ] Migration Flyway
+- [ ] Immutable (pas d'update)
+
+**Module:** inventory",,[E5-002] Modèle Stock
+[E5-004] Modèle Reservation,Task,New,High,,Sprint 5,3h,"**Description:**
+Créer le modèle pour les réservations de stock.
+
+**Critères d'acceptation:**
+- [ ] Entité Reservation (id, tenantId, stockId, orderId, quantity, status, expiresAt)
+- [ ] Enum ReservationStatus (PENDING, CONFIRMED, RELEASED, EXPIRED)
+- [ ] Migration Flyway
+- [ ] Expiration automatique (job schedulé)
+
+**Module:** inventory",,[E5-002] Modèle Stock
+[E5-005] Service StockService,Task,New,High,,Sprint 5,5h,"**Description:**
+Créer le service de gestion des stocks.
+
+**Critères d'acceptation:**
+- [ ] Consultation stock par produit/entrepôt
+- [ ] Entrée de stock (IN)
+- [ ] Sortie de stock (OUT)
+- [ ] Ajustement inventaire
+- [ ] Calcul disponibilité (quantity - reservedQuantity)
+- [ ] Vérification seuils d'alerte
+
+**Module:** inventory",,"[E5-002] Modèle Stock,[E5-003] Modèle StockMovement"
+[E5-006] Service ReservationService,Task,New,High,,Sprint 5,5h,"**Description:**
+Créer le service de gestion des réservations.
+
+**Critères d'acceptation:**
+- [ ] Création réservation avec vérification disponibilité
+- [ ] Confirmation réservation (décrémente stock)
+- [ ] Libération réservation (annulation)
+- [ ] Expiration automatique des réservations
+- [ ] Events: StockReservedEvent, StockReleasedEvent
+
+**Module:** inventory",,"[E5-004] Modèle Reservation,[E5-005] Service StockService"
+[E5-007] API REST Warehouses,Task,New,High,,Sprint 5,2h,"**Description:**
+Exposer les endpoints REST pour les entrepôts.
+
+**Critères d'acceptation:**
+- [ ] GET /api/warehouses
+- [ ] POST /api/warehouses (TENANT_ADMIN+)
+- [ ] GET /api/warehouses/{id}
+- [ ] PUT /api/warehouses/{id}
+- [ ] DELETE /api/warehouses/{id}
+
+**Module:** inventory",,[E5-001] Modèle Warehouse
+[E5-008] API REST Stock,Task,New,High,,Sprint 5,5h,"**Description:**
+Exposer les endpoints REST pour la gestion du stock.
+
+**Critères d'acceptation:**
+- [ ] GET /api/stock (liste avec filtres)
+- [ ] GET /api/stock/product/{productId}
+- [ ] POST /api/stock/movement (entrée/sortie/ajustement)
+- [ ] GET /api/stock/movements (historique paginé)
+- [ ] GET /api/stock/alerts (produits sous seuil)
+
+**Module:** inventory",,[E5-005] Service StockService
+[E6-001] Modèle Order,Task,New,High,,Sprint 6,5h,"**Description:**
+Créer le modèle de données pour les commandes.
+
+**Critères d'acceptation:**
+- [ ] Entité Order (id, tenantId, customerId, orderNumber, type, status, totalAmount, notes)
+- [ ] Enum OrderType (SALE, RENTAL)
+- [ ] Enum OrderStatus (DRAFT, PENDING, CONFIRMED, PROCESSING, SHIPPED, DELIVERED, CANCELLED, RETURNED)
+- [ ] Migration Flyway
+- [ ] Génération auto orderNumber
+
+**Module:** order",,"[E2-005] BaseEntity avec tenant_id,[E3-001] Modèle User en base de données"
+[E6-002] Modèle OrderItem,Task,New,High,,Sprint 6,3h,"**Description:**
+Créer le modèle pour les lignes de commande.
+
+**Critères d'acceptation:**
+- [ ] Entité OrderItem (id, orderId, productId, quantity, unitPrice, totalPrice, rentalStartDate, rentalEndDate)
+- [ ] Relation ManyToOne avec Order
+- [ ] Migration Flyway
+
+**Module:** order",,"[E6-001] Modèle Order,[E4-002] Modèle Product"
+[E6-003] Modèle Cart,Task,New,High,,Sprint 6,3h,"**Description:**
+Créer le modèle pour le panier d'achat.
+
+**Critères d'acceptation:**
+- [ ] Entité Cart (id, tenantId, userId, expiresAt)
+- [ ] Entité CartItem (id, cartId, productId, quantity, type)
+- [ ] Migration Flyway
+- [ ] Expiration automatique (24h)
+
+**Module:** order",,"[E2-005] BaseEntity avec tenant_id,[E4-002] Modèle Product"
+[E6-004] Service CartService,Task,New,High,,Sprint 6,5h,"**Description:**
+Créer le service de gestion du panier.
+
+**Critères d'acceptation:**
+- [ ] Ajouter produit au panier
+- [ ] Modifier quantité
+- [ ] Supprimer item
+- [ ] Vider panier
+- [ ] Calcul totaux
+- [ ] Vérification disponibilité stock
+
+**Module:** order",,"[E6-003] Modèle Cart,[E5-005] Service StockService"
+[E6-005] Service OrderService,Task,New,High,,Sprint 6,8h,"**Description:**
+Créer le service de gestion des commandes.
+
+**Critères d'acceptation:**
+- [ ] Création commande depuis panier
+- [ ] Réservation stock automatique
+- [ ] Workflow de statuts avec validations
+- [ ] Calcul totaux et taxes
+- [ ] Annulation avec libération stock
+- [ ] Events: OrderCreatedEvent, OrderStatusChangedEvent
+
+**Module:** order",,"[E6-001] Modèle Order,[E6-002] Modèle OrderItem,[E5-006] Service ReservationService"
+[E6-006] Service RentalService,Task,New,High,,Sprint 6,5h,"**Description:**
+Créer le service spécifique aux locations.
+
+**Critères d'acceptation:**
+- [ ] Calcul prix location (durée × prix journalier)
+- [ ] Vérification disponibilité sur période
+- [ ] Gestion calendrier de disponibilité
+- [ ] Retour de location
+- [ ] Pénalités retard
+
+**Module:** order",,[E6-005] Service OrderService
+[E6-007] API REST Cart,Task,New,High,,Sprint 6,3h,"**Description:**
+Exposer les endpoints REST pour le panier.
+
+**Critères d'acceptation:**
+- [ ] GET /api/cart
+- [ ] POST /api/cart/items
+- [ ] PUT /api/cart/items/{itemId}
+- [ ] DELETE /api/cart/items/{itemId}
+- [ ] DELETE /api/cart (vider)
+
+**Module:** order",,[E6-004] Service CartService
+[E6-008] API REST Orders,Task,New,High,,Sprint 6,5h,"**Description:**
+Exposer les endpoints REST pour les commandes.
+
+**Critères d'acceptation:**
+- [ ] POST /api/orders (création depuis panier)
+- [ ] GET /api/orders (liste paginée avec filtres)
+- [ ] GET /api/orders/{id}
+- [ ] PUT /api/orders/{id}/status (changement statut)
+- [ ] POST /api/orders/{id}/cancel
+
+**Module:** order",,[E6-005] Service OrderService
+[E6-009] API REST Rentals,Task,New,High,,Sprint 6,3h,"**Description:**
+Endpoints spécifiques aux locations.
+
+**Critères d'acceptation:**
+- [ ] GET /api/rentals (locations en cours)
+- [ ] GET /api/rentals/calendar (disponibilité produit)
+- [ ] POST /api/rentals/{id}/return
+- [ ] GET /api/rentals/overdue (retards)
+
+**Module:** order",,[E6-006] Service RentalService
+[E7-001] Modèle Invoice,Task,New,High,,Sprint 7,3h,"**Description:**
+Créer le modèle de données pour les factures.
+
+**Critères d'acceptation:**
+- [ ] Entité Invoice (id, tenantId, orderId, invoiceNumber, status, totalHT, taxAmount, totalTTC, dueDate, paidAt)
+- [ ] Enum InvoiceStatus (DRAFT, SENT, PAID, OVERDUE, CANCELLED)
+- [ ] Migration Flyway
+- [ ] Numérotation séquentielle par tenant
+
+**Module:** billing",,[E6-001] Modèle Order
+[E7-002] Modèle Payment,Task,New,High,,Sprint 7,3h,"**Description:**
+Créer le modèle de données pour les paiements.
+
+**Critères d'acceptation:**
+- [ ] Entité Payment (id, tenantId, invoiceId, amount, method, status, transactionId, paidAt)
+- [ ] Enum PaymentMethod (CARD, BANK_TRANSFER, CASH, OTHER)
+- [ ] Enum PaymentStatus (PENDING, COMPLETED, FAILED, REFUNDED)
+- [ ] Migration Flyway
+
+**Module:** billing",,[E7-001] Modèle Invoice
+[E7-004] Service InvoiceService,Task,New,High,,Sprint 7,5h,"**Description:**
+Créer le service de gestion des factures.
+
+**Critères d'acceptation:**
+- [ ] Génération facture depuis commande
+- [ ] Calcul TVA configurable par tenant
+- [ ] Envoi facture (event)
+- [ ] Marquage comme payée
+- [ ] Détection factures en retard
+
+**Module:** billing",,[E7-001] Modèle Invoice
+[E7-005] Service PaymentService,Task,New,High,,Sprint 7,5h,"**Description:**
+Créer le service de gestion des paiements.
+
+**Critères d'acceptation:**
+- [ ] Enregistrement paiement
+- [ ] Intégration Stripe (préparation)
+- [ ] Webhook handler pour callbacks
+- [ ] Remboursements
+- [ ] Events: PaymentConfirmedEvent, PaymentFailedEvent
+
+**Module:** billing",,[E7-002] Modèle Payment
+[E7-006] API REST Invoices,Task,New,High,,Sprint 7,3h,"**Description:**
+Exposer les endpoints REST pour les factures.
+
+**Critères d'acceptation:**
+- [ ] GET /api/invoices (liste paginée)
+- [ ] GET /api/invoices/{id}
+- [ ] GET /api/invoices/{id}/pdf
+- [ ] POST /api/invoices/{id}/send
+- [ ] PUT /api/invoices/{id}/mark-paid
+
+**Module:** billing",,[E7-004] Service InvoiceService
+[E7-007] API REST Payments,Task,New,High,,Sprint 7,3h,"**Description:**
+Exposer les endpoints REST pour les paiements.
+
+**Critères d'acceptation:**
+- [ ] POST /api/payments/checkout (initier paiement)
+- [ ] POST /api/payments/webhook (callback PSP)
+- [ ] GET /api/payments (historique)
+- [ ] POST /api/payments/{id}/refund
+
+**Module:** billing",,[E7-005] Service PaymentService
+[E8-001] Service UserService complet,Task,New,Medium,,Sprint 8,5h,"**Description:**
+Créer le service complet de gestion des utilisateurs.
+
+**Critères d'acceptation:**
+- [ ] CRUD complet
+- [ ] Recherche avec filtres (role, status, keyword)
+- [ ] Activation/désactivation
+- [ ] Changement de rôle
+- [ ] Changement de mot de passe
+
+**Module:** auth",,[E3-001] Modèle User en base de données
+[E8-002] API REST Users,Task,New,Medium,,Sprint 8,3h,"**Description:**
+Exposer les endpoints REST pour la gestion des utilisateurs.
+
+**Critères d'acceptation:**
+- [ ] GET /api/users (liste paginée, TENANT_ADMIN+)
+- [ ] POST /api/users (création, TENANT_ADMIN+)
+- [ ] GET /api/users/{id}
+- [ ] PUT /api/users/{id}
+- [ ] DELETE /api/users/{id} (soft delete)
+- [ ] PUT /api/users/{id}/role
+
+**Module:** auth",,[E8-001] Service UserService complet
+[E9-003] Service EmailService,Task,New,Medium,,Sprint 8,5h,"**Description:**
+Créer le service d'envoi d'emails.
+
+**Critères d'acceptation:**
+- [ ] Configuration SMTP
+- [ ] Templates HTML (Thymeleaf)
+- [ ] Emails: welcome, reset-password, order-confirmation, invoice
+- [ ] Envoi asynchrone (@Async)
+- [ ] Retry en cas d'échec
+
+**Module:** notification",,[E1-004] Module Common - Exceptions et Utils
+[E11-001] Setup projet Angular,Task,New,High,,Sprint 1,3h,"**Description:**
+Initialiser le projet Angular avec la configuration de base.
+
+**Critères d'acceptation:**
+- [ ] Angular 17+ avec standalone components
+- [ ] Configuration routing
+- [ ] HTTP interceptors (auth, tenant, errors)
+- [ ] Structure dossiers (core, shared, features)
+- [ ] Environnements (dev, prod)
+
+**Module:** frontend",,
+[E11-002] Design System - Tokens CSS,Task,New,High,,Sprint 1,3h,"**Description:**
+Implémenter les design tokens et styles de base.
+
+**Critères d'acceptation:**
+- [ ] Variables CSS selon spec (couleurs, typo, spacing)
+- [ ] Reset CSS
+- [ ] Classes utilitaires
+- [ ] Thème light
+
+**Module:** frontend",,
+[E11-003] Composants UI de base,Task,New,High,,Sprint 2,8h,"**Description:**
+Créer la bibliothèque de composants réutilisables.
+
+**Critères d'acceptation:**
+- [ ] Button (variants, sizes, loading)
+- [ ] Input, Select, Checkbox, Radio
+- [ ] Card, Modal, Toast
+- [ ] Table avec pagination
+- [ ] Loading spinner, Skeleton
+- [ ] Alert, Badge, Avatar
+
+**Module:** frontend",,"[E11-001] Setup projet Angular,[E11-002] Design System - Tokens CSS"
+[E11-004] Layout principal,Task,New,High,,Sprint 2,3h,"**Description:**
+Créer le layout de l'application.
+
+**Critères d'acceptation:**
+- [ ] Sidebar navigation
+- [ ] Header avec user menu
+- [ ] Breadcrumbs
+- [ ] Responsive (mobile menu)
+
+**Module:** frontend",,[E11-003] Composants UI de base
+[E11-005] Service AuthService Angular,Task,New,High,,Sprint 3,5h,"**Description:**
+Implémenter le service d'authentification Angular.
+
+**Critères d'acceptation:**
+- [ ] Login, logout, register
+- [ ] Stockage tokens (localStorage)
+- [ ] Auto refresh token
+- [ ] Current user state (signal/observable)
+- [ ] Guards (auth, roles)
+
+**Module:** frontend",,"[E11-004] Layout principal,[E3-005] Endpoint Login"
+[E11-006] Pages Auth,Task,New,High,,Sprint 3,5h,"**Description:**
+Créer les pages d'authentification.
+
+**Critères d'acceptation:**
+- [ ] Login page
+- [ ] Register page
+- [ ] Forgot password page
+- [ ] Reset password page
+- [ ] Validation formulaires
+
+**Module:** frontend",,[E11-005] Service AuthService Angular
+[E11-007] Dashboard page,Task,New,High,,Sprint 4,5h,"**Description:**
+Créer la page dashboard.
+
+**Critères d'acceptation:**
+- [ ] KPIs cards (ventes, stock, commandes)
+- [ ] Graphiques (ventes, tendances)
+- [ ] Commandes récentes
+- [ ] Alertes stock
+
+**Module:** frontend",,[E11-005] Service AuthService Angular
+[E11-008] Module Catalogue Frontend,Task,New,High,,Sprint 5,8h,"**Description:**
+Créer les pages de gestion du catalogue.
+
+**Critères d'acceptation:**
+- [ ] Liste produits avec filtres et pagination
+- [ ] Formulaire création/édition produit
+- [ ] Upload images
+- [ ] Gestion catégories (arbre)
+
+**Module:** frontend",,"[E11-005] Service AuthService Angular,[E4-008] API REST Products"
+[E11-009] Module Stock Frontend,Task,New,High,,Sprint 5,5h,"**Description:**
+Créer les pages de gestion du stock.
+
+**Critères d'acceptation:**
+- [ ] Vue stock par produit
+- [ ] Mouvements de stock
+- [ ] Alertes stock bas
+- [ ] Gestion entrepôts
+
+**Module:** frontend",,"[E11-005] Service AuthService Angular,[E5-008] API REST Stock"
+[E11-010] Module Commandes Frontend,Task,New,High,,Sprint 6,8h,"**Description:**
+Créer les pages de gestion des commandes.
+
+**Critères d'acceptation:**
+- [ ] Liste commandes avec filtres
+- [ ] Détail commande avec timeline
+- [ ] Panier d'achat
+- [ ] Checkout flow
+
+**Module:** frontend",,"[E11-005] Service AuthService Angular,[E6-008] API REST Orders"
+[E11-011] Module Facturation Frontend,Task,New,High,,Sprint 7,5h,"**Description:**
+Créer les pages de facturation.
+
+**Critères d'acceptation:**
+- [ ] Liste factures
+- [ ] Détail facture
+- [ ] Download PDF
+- [ ] Historique paiements
+
+**Module:** frontend",,"[E11-005] Service AuthService Angular,[E7-006] API REST Invoices"
+[E12-001] Dockerfile Backend,Task,New,High,,Sprint 1,2h,"**Description:**
+Créer le Dockerfile pour l'application Spring Boot.
+
+**Critères d'acceptation:**
+- [ ] Multi-stage build
+- [ ] Image optimisée (JRE slim)
+- [ ] Non-root user
+- [ ] Health check
+
+**Module:** infra",,
+[E12-002] Dockerfile Frontend,Task,New,High,,Sprint 2,2h,"**Description:**
+Créer le Dockerfile pour l'application Angular.
+
+**Critères d'acceptation:**
+- [ ] Multi-stage build (node + nginx)
+- [ ] Configuration nginx optimisée
+- [ ] Gzip enabled
+- [ ] Cache headers
+
+**Module:** infra",,[E11-001] Setup projet Angular
+[E12-003] Docker Compose développement,Task,New,High,,Sprint 1,3h,"**Description:**
+Créer la configuration Docker Compose pour le dev local.
+
+**Critères d'acceptation:**
+- [ ] Services: app, frontend, postgres, mailhog
+- [ ] Volumes pour persistence
+- [ ] Hot reload backend
+- [ ] Variables environnement (.env)
+
+**Module:** infra",,"[E1-001] Setup Spring Boot,[E12-001] Dockerfile Backend"

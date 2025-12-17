@@ -1,0 +1,48 @@
+# ═══════════════════════════════════════════════════════════════════
+# FEATURE: [E5] Module Stock / Warehouse
+# ═══════════════════════════════════════════════════════════════════
+# Importé depuis OpenProject #217
+
+feature:
+  id: "OP-217"
+  openproject_id: 217
+  name: "[E5] Module Stock / Warehouse"
+  description: |
+    **Feature E5**
+
+8 tickets - Estimation: 28h
+  
+  priority: "high"
+  estimated_days: 3
+  status: "todo"
+
+# ═══════════════════════════════════════════════════════════════════
+# MODÈLE DE DONNÉES
+# ═══════════════════════════════════════════════════════════════════
+# TODO: Définir les entités
+
+entities: {}
+
+# ═══════════════════════════════════════════════════════════════════
+# API REST
+# ═══════════════════════════════════════════════════════════════════
+# TODO: Définir les endpoints
+
+api:
+  endpoints: []
+
+# ═══════════════════════════════════════════════════════════════════
+# FRONTEND
+# ═══════════════════════════════════════════════════════════════════
+# TODO: Définir les pages
+
+frontend:
+  pages: []
+
+# ═══════════════════════════════════════════════════════════════════
+# NOTES
+# ═══════════════════════════════════════════════════════════════════
+
+notes: |
+  Importé depuis OpenProject le 2025-12-17
+  URL: https://aam.openproject.com/work_packages/217

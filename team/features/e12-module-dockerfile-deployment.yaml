@@ -1,0 +1,48 @@
+# ═══════════════════════════════════════════════════════════════════
+# FEATURE: [E12] Module Dockerfile / Deployment
+# ═══════════════════════════════════════════════════════════════════
+# Importé depuis OpenProject #260
+
+feature:
+  id: "OP-260"
+  openproject_id: 260
+  name: "[E12] Module Dockerfile / Deployment"
+  description: |
+    **Feature E12**
+
+3 tickets - Estimation: 7h
+  
+  priority: "medium"
+  estimated_days: 1
+  status: "todo"
+
+# ═══════════════════════════════════════════════════════════════════
+# MODÈLE DE DONNÉES
+# ═══════════════════════════════════════════════════════════════════
+# TODO: Définir les entités
+
+entities: {}
+
+# ═══════════════════════════════════════════════════════════════════
+# API REST
+# ═══════════════════════════════════════════════════════════════════
+# TODO: Définir les endpoints
+
+api:
+  endpoints: []
+
+# ═══════════════════════════════════════════════════════════════════
+# FRONTEND
+# ═══════════════════════════════════════════════════════════════════
+# TODO: Définir les pages
+
+frontend:
+  pages: []
+
+# ═══════════════════════════════════════════════════════════════════
+# NOTES
+# ═══════════════════════════════════════════════════════════════════
+
+notes: |
+  Importé depuis OpenProject le 2025-12-17
+  URL: https://aam.openproject.com/work_packages/260
