@@ -60,3 +60,9 @@ logging:
     com.sportsaas: DEBUG
     org.springframework.web: INFO
     org.hibernate.SQL: DEBUG
+
+# JWT Configuration
+jwt:
+  secret: ${JWT_SECRET:dGhpcyBpcyBhIHZlcnkgbG9uZyBzZWNyZXQga2V5IGZvciBqd3QgdG9rZW4gc2lnbmluZyBpbiBkZXZlbG9wbWVudA==}
+  access-token-expiration: ${JWT_ACCESS_EXPIRATION:900000}  # 15 minutes
+  refresh-token-expiration: ${JWT_REFRESH_EXPIRATION:604800000}  # 7 days
