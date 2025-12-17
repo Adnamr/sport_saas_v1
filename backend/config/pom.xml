@@ -22,6 +22,12 @@
             <artifactId>common</artifactId>
         </dependency>
 
+        <!-- Module auth -->
+        <dependency>
+            <groupId>com.sportsaas</groupId>
+            <artifactId>auth</artifactId>
+        </dependency>
+
         <!-- Spring Boot -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -30,6 +36,10 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-data-jpa</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-security</artifactId>
         </dependency>
 
         <!-- OpenAPI -->
