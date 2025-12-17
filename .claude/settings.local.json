@@ -1,0 +1,10 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(python:*)",
+      "Bash(mvn test:*)",
+      "Bash(./team/scripts/openproject-api.sh:*)",
+      "Bash(curl:*)"
+    ]
+  }
+}
