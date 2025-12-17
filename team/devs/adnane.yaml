@@ -24,13 +24,7 @@ dev:
 #                    FEATURE EN COURS
 # ═══════════════════════════════════════════════════════════════════
 
-current_feature:
-  feature_id: "E1"
-  feature_name: "e1-module-configuration"
-  title: "Module Configuration"
-  branch: "feature/e1-module-configuration"
-  started_at: "2025-01-17T12:00:00Z"
-  status: "in_progress"
+current_feature: null
 
 current_ticket: null
 
@@ -55,4 +49,15 @@ claude_preferences:
 #                    HISTORIQUE (derniers tickets)
 # ═══════════════════════════════════════════════════════════════════
 
-history: []
+history:
+  - feature_id: "E1"
+    feature_name: "e1-module-configuration"
+    title: "Module Configuration"
+    completed_at: "2025-12-17"
+    branch: "feature/e1-module-configuration"
+
+  - feature_id: "E2"
+    feature_name: "e2-module-tenant"
+    title: "Module Tenant / Multi-tenant"
+    completed_at: "2025-12-17"
+    branch: "feature/e2-module-tenant"
