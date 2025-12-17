@@ -1,40 +1,64 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
+import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
+import { AuthService } from '@core/services/auth.service';
 import { CardComponent } from '@shared/components/card/card.component';
 import { ButtonComponent } from '@shared/components/button/button.component';
 import { InputComponent } from '@shared/components/input/input.component';
-import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-forgot-password',
   standalone: true,
-  imports: [CommonModule, RouterLink, CardComponent, ButtonComponent, InputComponent, ReactiveFormsModule],
-  template: `
-    <div class="auth-container">
-      <app-card class="auth-card">
-        <div class="auth-header">
-          <h1>Mot de passe oublié</h1>
-          <p>Entrez votre email pour réinitialiser votre mot de passe</p>
-        </div>
-        <form [formGroup]="form">
-          <div class="form-group">
-            <app-input label="Email" type="email" formControlName="email" [required]="true"></app-input>
-          </div>
-          <app-button type="submit" [fullWidth]="true">Envoyer le lien</app-button>
-          <p class="back-link"><a routerLink="/auth/login">Retour à la connexion</a></p>
-        </form>
-      </app-card>
-    </div>
-  `,
-  styles: [`
-    .auth-container { min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: var(--space-4); background: var(--color-bg-secondary); }
-    .auth-card { width: 100%; max-width: 400px; }
-    .auth-header { text-align: center; margin-bottom: var(--space-6); h1 { font-size: var(--font-size-2xl); font-weight: var(--font-weight-bold); margin-bottom: var(--space-2); } p { color: var(--color-text-secondary); } }
-    .form-group { margin-bottom: var(--space-4); }
-    .back-link { text-align: center; margin-top: var(--space-4); a { color: var(--color-primary); } }
-  `]
+  imports: [
+    CommonModule,
+    RouterLink,
+    ReactiveFormsModule,
+    CardComponent,
+    ButtonComponent,
+    InputComponent
+  ],
+  templateUrl: './forgot-password.component.html',
+  styleUrl: './forgot-password.component.scss'
 })
 export class ForgotPasswordComponent {
-  form = new FormBuilder().group({ email: ['', [Validators.required, Validators.email]] });
+  private fb = inject(FormBuilder);
+  private authService = inject(AuthService);
+
+  form = this.fb.group({
+    email: ['', [Validators.required, Validators.email]]
+  });
+
+  isLoading = false;
+  isSubmitted = false;
+  errorMessage = '';
+
+  onSubmit(): void {
+    if (this.form.invalid) return;
+
+    this.isLoading = true;
+    this.errorMessage = '';
+
+    const email = this.form.get('email')?.value as string;
+
+    this.authService.forgotPassword(email).subscribe({
+      next: () => {
+        this.isLoading = false;
+        this.isSubmitted = true;
+      },
+      error: (error) => {
+        this.isLoading = false;
+        this.errorMessage = error.message || 'Une erreur est survenue';
+      }
+    });
+  }
+
+  getError(field: string): string {
+    const control = this.form.get(field);
+    if (control?.touched && control?.errors) {
+      if (control.errors['required']) return 'Ce champ est requis';
+      if (control.errors['email']) return 'Email invalide';
+    }
+    return '';
+  }
 }

@@ -1,44 +1,94 @@
-import { Component } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterLink } from '@angular/router';
+import { Router, RouterLink, ActivatedRoute } from '@angular/router';
+import { FormBuilder, ReactiveFormsModule, Validators, AbstractControl, ValidationErrors } from '@angular/forms';
+import { AuthService } from '@core/services/auth.service';
 import { CardComponent } from '@shared/components/card/card.component';
 import { ButtonComponent } from '@shared/components/button/button.component';
 import { InputComponent } from '@shared/components/input/input.component';
-import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-reset-password',
   standalone: true,
-  imports: [CommonModule, RouterLink, CardComponent, ButtonComponent, InputComponent, ReactiveFormsModule],
-  template: `
-    <div class="auth-container">
-      <app-card class="auth-card">
-        <div class="auth-header">
-          <h1>Nouveau mot de passe</h1>
-          <p>Choisissez un nouveau mot de passe</p>
-        </div>
-        <form [formGroup]="form">
-          <div class="form-group">
-            <app-input label="Nouveau mot de passe" type="password" formControlName="password" [required]="true"></app-input>
-          </div>
-          <div class="form-group">
-            <app-input label="Confirmer le mot de passe" type="password" formControlName="confirmPassword" [required]="true"></app-input>
-          </div>
-          <app-button type="submit" [fullWidth]="true">Réinitialiser</app-button>
-        </form>
-      </app-card>
-    </div>
-  `,
-  styles: [`
-    .auth-container { min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: var(--space-4); background: var(--color-bg-secondary); }
-    .auth-card { width: 100%; max-width: 400px; }
-    .auth-header { text-align: center; margin-bottom: var(--space-6); h1 { font-size: var(--font-size-2xl); font-weight: var(--font-weight-bold); margin-bottom: var(--space-2); } p { color: var(--color-text-secondary); } }
-    .form-group { margin-bottom: var(--space-4); }
-  `]
+  imports: [
+    CommonModule,
+    RouterLink,
+    ReactiveFormsModule,
+    CardComponent,
+    ButtonComponent,
+    InputComponent
+  ],
+  templateUrl: './reset-password.component.html',
+  styleUrl: './reset-password.component.scss'
 })
-export class ResetPasswordComponent {
-  form = new FormBuilder().group({
+export class ResetPasswordComponent implements OnInit {
+  private fb = inject(FormBuilder);
+  private authService = inject(AuthService);
+  private router = inject(Router);
+  private route = inject(ActivatedRoute);
+
+  form = this.fb.group({
     password: ['', [Validators.required, Validators.minLength(8)]],
-    confirmPassword: ['', Validators.required]
-  });
+    confirmPassword: ['', [Validators.required]]
+  }, { validators: this.passwordMatchValidator });
+
+  token = '';
+  isLoading = false;
+  isSuccess = false;
+  errorMessage = '';
+
+  ngOnInit(): void {
+    this.token = this.route.snapshot.queryParamMap.get('token') || '';
+
+    if (!this.token) {
+      this.errorMessage = 'Lien de réinitialisation invalide ou expiré.';
+    }
+  }
+
+  onSubmit(): void {
+    if (this.form.invalid || !this.token) return;
+
+    this.isLoading = true;
+    this.errorMessage = '';
+
+    const password = this.form.get('password')?.value as string;
+
+    this.authService.resetPassword(this.token, password).subscribe({
+      next: () => {
+        this.isLoading = false;
+        this.isSuccess = true;
+      },
+      error: (error) => {
+        this.isLoading = false;
+        this.errorMessage = error.message || 'Une erreur est survenue';
+      }
+    });
+  }
+
+  getError(field: string): string {
+    const control = this.form.get(field);
+    if (control?.touched && control?.errors) {
+      if (control.errors['required']) return 'Ce champ est requis';
+      if (control.errors['minlength']) return 'Minimum 8 caractères';
+    }
+
+    if (field === 'confirmPassword' && this.form.errors?.['passwordMismatch']) {
+      const confirmControl = this.form.get('confirmPassword');
+      if (confirmControl?.touched) {
+        return 'Les mots de passe ne correspondent pas';
+      }
+    }
+
+    return '';
+  }
+
+  private passwordMatchValidator(control: AbstractControl): ValidationErrors | null {
+    const password = control.get('password');
+    const confirmPassword = control.get('confirmPassword');
+
+    if (password && confirmPassword && password.value !== confirmPassword.value) {
+      return { passwordMismatch: true };
+    }
+    return null;
+  }
 }
