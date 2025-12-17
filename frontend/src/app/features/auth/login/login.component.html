@@ -1,0 +1,55 @@
+<div class="auth-container">
+  <app-card class="auth-card">
+    <div class="auth-header">
+      <h1>Connexion</h1>
+      <p>Accédez à votre espace Sport SaaS</p>
+    </div>
+
+    <form [formGroup]="form" (ngSubmit)="onSubmit()">
+      @if (errorMessage) {
+        <div class="alert alert-error">{{ errorMessage }}</div>
+      }
+
+      <div class="form-group">
+        <app-input
+          label="Email"
+          type="email"
+          formControlName="email"
+          placeholder="votre@email.com"
+          [error]="getError('email')"
+          [required]="true">
+        </app-input>
+      </div>
+
+      <div class="form-group">
+        <app-input
+          label="Mot de passe"
+          type="password"
+          formControlName="password"
+          placeholder="Votre mot de passe"
+          [error]="getError('password')"
+          [required]="true">
+        </app-input>
+      </div>
+
+      <div class="form-actions">
+        <a routerLink="/auth/forgot-password" class="forgot-link">
+          Mot de passe oublié ?
+        </a>
+      </div>
+
+      <app-button
+        type="submit"
+        [fullWidth]="true"
+        [loading]="isLoading"
+        [disabled]="form.invalid">
+        Se connecter
+      </app-button>
+
+      <p class="register-link">
+        Pas encore de compte ?
+        <a routerLink="/auth/register">Créer un compte</a>
+      </p>
+    </form>
+  </app-card>
+</div>

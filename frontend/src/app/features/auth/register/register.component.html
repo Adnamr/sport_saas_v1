@@ -1,0 +1,70 @@
+<div class="auth-container">
+  <app-card class="auth-card">
+    <div class="auth-header">
+      <h1>Créer un compte</h1>
+      <p>Rejoignez Sport SaaS</p>
+    </div>
+
+    <form [formGroup]="form" (ngSubmit)="onSubmit()">
+      @if (errorMessage) {
+        <div class="alert alert-error">{{ errorMessage }}</div>
+      }
+
+      <div class="form-row">
+        <div class="form-group">
+          <app-input
+            label="Prénom"
+            formControlName="firstName"
+            placeholder="Jean"
+            [error]="getError('firstName')"
+            [required]="true">
+          </app-input>
+        </div>
+        <div class="form-group">
+          <app-input
+            label="Nom"
+            formControlName="lastName"
+            placeholder="Dupont"
+            [error]="getError('lastName')"
+            [required]="true">
+          </app-input>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <app-input
+          label="Email"
+          type="email"
+          formControlName="email"
+          placeholder="jean.dupont@email.com"
+          [error]="getError('email')"
+          [required]="true">
+        </app-input>
+      </div>
+
+      <div class="form-group">
+        <app-input
+          label="Mot de passe"
+          type="password"
+          formControlName="password"
+          placeholder="Minimum 8 caractères"
+          [error]="getError('password')"
+          [required]="true">
+        </app-input>
+      </div>
+
+      <app-button
+        type="submit"
+        [fullWidth]="true"
+        [loading]="isLoading"
+        [disabled]="form.invalid">
+        Créer mon compte
+      </app-button>
+
+      <p class="login-link">
+        Déjà un compte ?
+        <a routerLink="/auth/login">Se connecter</a>
+      </p>
+    </form>
+  </app-card>
+</div>
