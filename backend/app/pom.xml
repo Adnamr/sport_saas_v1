@@ -25,6 +25,10 @@
             <groupId>com.sportsaas</groupId>
             <artifactId>config</artifactId>
         </dependency>
+        <dependency>
+            <groupId>com.sportsaas</groupId>
+            <artifactId>tenant</artifactId>
+        </dependency>
 
         <!-- Spring Boot Starters -->
         <dependency>
