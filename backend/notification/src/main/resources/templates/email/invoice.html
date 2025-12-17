@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Facture</title>
+    <style>
+        body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; max-width: 600px; margin: 0 auto; padding: 20px; }
+        .header { background: #7c3aed; color: white; padding: 20px; text-align: center; border-radius: 8px 8px 0 0; }
+        .content { background: #f9fafb; padding: 30px; border: 1px solid #e5e7eb; }
+        .invoice-details { background: white; border: 1px solid #e5e7eb; border-radius: 6px; padding: 20px; margin: 20px 0; }
+        .invoice-row { display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid #e5e7eb; }
+        .invoice-row:last-child { border-bottom: none; }
+        .invoice-row.total { font-weight: bold; font-size: 18px; background: #f3f4f6; margin: 0 -20px; padding: 15px 20px; }
+        .due-date { background: #fef3c7; border: 1px solid #f59e0b; padding: 15px; border-radius: 6px; margin: 20px 0; text-align: center; }
+        .footer { text-align: center; padding: 20px; color: #6b7280; font-size: 12px; }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1 th:text="${appName}">Sport SaaS</h1>
+        <h2>Facture</h2>
+    </div>
+    <div class="content">
+        <p>Bonjour <span th:text="${firstName}">Utilisateur</span>,</p>
+        <p>Veuillez trouver ci-dessous les détails de votre facture :</p>
+
+        <div class="invoice-details">
+            <div class="invoice-row">
+                <span>Numéro de facture</span>
+                <span th:text="${invoiceNumber}">INV-001</span>
+            </div>
+            <div class="invoice-row">
+                <span>Date d'émission</span>
+                <span th:text="${invoiceDate}">01/01/2024</span>
+            </div>
+            <div class="invoice-row">
+                <span>Date d'échéance</span>
+                <span th:text="${dueDate}">15/01/2024</span>
+            </div>
+            <div class="invoice-row total">
+                <span>Montant total</span>
+                <span th:text="${totalAmount}">0.00 EUR</span>
+            </div>
+        </div>
+
+        <div class="due-date">
+            <strong>Date d'échéance :</strong> <span th:text="${dueDate}">15/01/2024</span>
+        </div>
+
+        <p>Pour toute question concernant cette facture, n'hésitez pas à nous contacter.</p>
+        <p>Nous vous remercions pour votre confiance.</p>
+    </div>
+    <div class="footer">
+        <p>&copy; 2024 <span th:text="${appName}">Sport SaaS</span>. Tous droits réservés.</p>
+        <p>Cet email a été envoyé automatiquement. Merci de ne pas y répondre.</p>
+    </div>
+</body>
+</html>
