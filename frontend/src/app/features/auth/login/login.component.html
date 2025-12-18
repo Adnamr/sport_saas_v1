@@ -1,55 +1,105 @@
-<div class="auth-container">
-  <app-card class="auth-card">
-    <div class="auth-header">
-      <h1>Connexion</h1>
-      <p>Accédez à votre espace Sport SaaS</p>
+<div class="bg-white/10 backdrop-blur-lg rounded-2xl shadow-2xl p-8 w-full max-w-md border border-white/20">
+  <!-- Logo -->
+  <div class="text-center mb-8">
+    <div class="w-16 h-16 bg-blue-500 rounded-xl mx-auto mb-4 flex items-center justify-center">
+      <svg class="w-10 h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/>
+      </svg>
+    </div>
+    <h1 class="text-2xl font-bold text-white">Connexion</h1>
+    <p class="text-slate-400 mt-2">Accédez à votre espace</p>
+  </div>
+
+  <!-- Error Alert -->
+  @if (errorMessage) {
+    <div class="mb-6 p-4 bg-red-500/20 border border-red-500/50 rounded-xl text-red-300 text-sm">
+      {{ errorMessage }}
+    </div>
+  }
+
+  <!-- Form -->
+  <form [formGroup]="form" (ngSubmit)="onSubmit()" class="space-y-6">
+    <!-- Email -->
+    <div>
+      <label class="block text-sm font-medium text-slate-300 mb-2">Email</label>
+      <input
+        type="email"
+        formControlName="email"
+        placeholder="votre@email.com"
+        class="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all">
+      @if (getError('email')) {
+        <p class="mt-1 text-sm text-red-400">{{ getError('email') }}</p>
+      }
     </div>
 
-    <form [formGroup]="form" (ngSubmit)="onSubmit()">
-      @if (errorMessage) {
-        <div class="alert alert-error">{{ errorMessage }}</div>
-      }
-
-      <div class="form-group">
-        <app-input
-          label="Email"
-          type="email"
-          formControlName="email"
-          placeholder="votre@email.com"
-          [error]="getError('email')"
-          [required]="true">
-        </app-input>
-      </div>
-
-      <div class="form-group">
-        <app-input
-          label="Mot de passe"
-          type="password"
+    <!-- Password -->
+    <div>
+      <label class="block text-sm font-medium text-slate-300 mb-2">Mot de passe</label>
+      <div class="relative">
+        <input
+          [type]="showPassword ? 'text' : 'password'"
           formControlName="password"
           placeholder="Votre mot de passe"
-          [error]="getError('password')"
-          [required]="true">
-        </app-input>
+          class="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-blue-500 pr-12 transition-all">
+        <button
+          type="button"
+          (click)="showPassword = !showPassword"
+          class="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-white transition-colors">
+          @if (showPassword) {
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l3.59 3.59m0 0A9.953 9.953 0 0112 5c4.478 0 8.268 2.943 9.543 7a10.025 10.025 0 01-4.132 5.411m0 0L21 21"/>
+            </svg>
+          } @else {
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
+            </svg>
+          }
+        </button>
       </div>
+      @if (getError('password')) {
+        <p class="mt-1 text-sm text-red-400">{{ getError('password') }}</p>
+      }
+    </div>
 
-      <div class="form-actions">
-        <a routerLink="/auth/forgot-password" class="forgot-link">
-          Mot de passe oublié ?
-        </a>
-      </div>
+    <!-- Remember + Forgot -->
+    <div class="flex items-center justify-between">
+      <label class="flex items-center gap-2 cursor-pointer">
+        <input type="checkbox" class="w-4 h-4 rounded bg-white/5 border-white/10 text-blue-500 focus:ring-blue-500">
+        <span class="text-sm text-slate-400">Se souvenir</span>
+      </label>
+      <a routerLink="/auth/forgot-password" class="text-sm text-blue-400 hover:text-blue-300 transition-colors">
+        Mot de passe oublié ?
+      </a>
+    </div>
 
-      <app-button
-        type="submit"
-        [fullWidth]="true"
-        [loading]="isLoading"
-        [disabled]="form.invalid">
+    <!-- Submit -->
+    <button
+      type="submit"
+      [disabled]="form.invalid || isLoading"
+      class="w-full py-3 bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 disabled:from-slate-600 disabled:to-slate-700 disabled:cursor-not-allowed text-white font-semibold rounded-xl shadow-lg shadow-blue-500/25 transition-all duration-300 transform hover:scale-[1.02] disabled:hover:scale-100 flex items-center justify-center gap-2">
+      @if (isLoading) {
+        <svg class="animate-spin h-5 w-5" fill="none" viewBox="0 0 24 24">
+          <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+          <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+        </svg>
+        Connexion...
+      } @else {
         Se connecter
-      </app-button>
+      }
+    </button>
+  </form>
 
-      <p class="register-link">
-        Pas encore de compte ?
-        <a routerLink="/auth/register">Créer un compte</a>
-      </p>
-    </form>
-  </app-card>
+  <!-- Divider -->
+  <div class="my-6 flex items-center gap-4">
+    <div class="flex-1 h-px bg-white/10"></div>
+    <span class="text-slate-500 text-sm">ou</span>
+    <div class="flex-1 h-px bg-white/10"></div>
+  </div>
+
+  <!-- Register link -->
+  <p class="text-center text-slate-400">
+    Pas de compte ?
+    <a routerLink="/auth/register" class="text-blue-400 hover:text-blue-300 font-medium transition-colors">S'inscrire</a>
+  </p>
 </div>

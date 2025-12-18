@@ -85,6 +85,12 @@ export class AuthService {
     return this.http.post<void>(`${this.apiUrl}/reset-password`, { token, password });
   }
 
+  validateResetToken(token: string): Observable<{ valid: boolean; expired?: boolean }> {
+    return this.http.get<{ valid: boolean; expired?: boolean }>(`${this.apiUrl}/validate-reset-token`, {
+      params: { token }
+    });
+  }
+
   getToken(): string | null {
     return this.tokenSignal();
   }

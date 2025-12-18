@@ -1,11 +1,8 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, computed, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FormBuilder, ReactiveFormsModule, Validators, AbstractControl, ValidationErrors } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
 import { AuthService } from '@core/services/auth.service';
-import { ButtonComponent } from '@shared/components/button/button.component';
-import { InputComponent } from '@shared/components/input/input.component';
-import { CardComponent } from '@shared/components/card/card.component';
 
 @Component({
   selector: 'app-register',
@@ -13,10 +10,7 @@ import { CardComponent } from '@shared/components/card/card.component';
   imports: [
     CommonModule,
     ReactiveFormsModule,
-    RouterLink,
-    ButtonComponent,
-    InputComponent,
-    CardComponent
+    RouterLink
   ],
   templateUrl: './register.component.html',
   styleUrl: './register.component.scss'
@@ -27,14 +21,69 @@ export class RegisterComponent {
   private router = inject(Router);
 
   form = this.fb.group({
-    firstName: ['', Validators.required],
-    lastName: ['', Validators.required],
+    firstName: ['', [Validators.required, Validators.minLength(2)]],
+    lastName: ['', [Validators.required, Validators.minLength(2)]],
     email: ['', [Validators.required, Validators.email]],
-    password: ['', [Validators.required, Validators.minLength(8)]]
-  });
+    organization: ['', Validators.required],
+    organizationType: ['club'],
+    password: ['', [Validators.required, Validators.minLength(8)]],
+    confirmPassword: ['', Validators.required],
+    acceptCgu: [false, Validators.requiredTrue],
+    newsletter: [false]
+  }, { validators: this.passwordMatchValidator });
 
   isLoading = false;
   errorMessage = '';
+  showPassword = false;
+  showConfirmPassword = false;
+
+  passwordStrength = signal<'none' | 'weak' | 'medium' | 'strong'>('none');
+
+  strengthLabel = computed(() => {
+    const strength = this.passwordStrength();
+    switch (strength) {
+      case 'weak': return 'Faible';
+      case 'medium': return 'Moyen';
+      case 'strong': return 'Fort';
+      default: return '';
+    }
+  });
+
+  organizationTypes = [
+    { value: 'club', label: 'Club sportif' },
+    { value: 'association', label: 'Association' },
+    { value: 'retailer', label: 'Revendeur' },
+    { value: 'school', label: 'École / Université' }
+  ];
+
+  passwordMatchValidator(control: AbstractControl): ValidationErrors | null {
+    const password = control.get('password');
+    const confirmPassword = control.get('confirmPassword');
+    if (password && confirmPassword && password.value !== confirmPassword.value) {
+      confirmPassword.setErrors({ passwordMismatch: true });
+      return { passwordMismatch: true };
+    }
+    return null;
+  }
+
+  onPasswordChange(): void {
+    const password = this.form.get('password')?.value || '';
+    this.passwordStrength.set(this.calculateStrength(password));
+  }
+
+  calculateStrength(password: string): 'none' | 'weak' | 'medium' | 'strong' {
+    if (!password) return 'none';
+    let score = 0;
+    if (password.length >= 8) score++;
+    if (/[A-Z]/.test(password)) score++;
+    if (/[a-z]/.test(password)) score++;
+    if (/[0-9]/.test(password)) score++;
+    if (/[^A-Za-z0-9]/.test(password)) score++;
+
+    if (score <= 2) return 'weak';
+    if (score <= 4) return 'medium';
+    return 'strong';
+  }
 
   onSubmit(): void {
     if (this.form.invalid) return;
@@ -42,14 +91,22 @@ export class RegisterComponent {
     this.isLoading = true;
     this.errorMessage = '';
 
-    this.authService.register(this.form.value as any).subscribe({
+    const formValue = this.form.value;
+    this.authService.register({
+      firstName: formValue.firstName!,
+      lastName: formValue.lastName!,
+      email: formValue.email!,
+      password: formValue.password!
+    }).subscribe({
       next: () => {
         this.isLoading = false;
-        this.router.navigate(['/dashboard']);
+        this.router.navigate(['/auth/login'], {
+          queryParams: { registered: true }
+        });
       },
       error: (error) => {
         this.isLoading = false;
-        this.errorMessage = error.message || 'Une erreur est survenue';
+        this.errorMessage = error.error?.message || 'Une erreur est survenue';
       }
     });
   }
@@ -58,8 +115,10 @@ export class RegisterComponent {
     const control = this.form.get(field);
     if (control?.touched && control?.errors) {
       if (control.errors['required']) return 'Ce champ est requis';
+      if (control.errors['requiredTrue']) return 'Vous devez accepter les CGU';
       if (control.errors['email']) return 'Email invalide';
-      if (control.errors['minlength']) return 'Minimum 8 caractères';
+      if (control.errors['minlength']) return `Minimum ${control.errors['minlength'].requiredLength} caractères`;
+      if (control.errors['passwordMismatch']) return 'Les mots de passe ne correspondent pas';
     }
     return '';
   }
