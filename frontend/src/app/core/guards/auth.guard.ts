@@ -27,3 +27,15 @@ export const roleGuard = (allowedRoles: string[]): CanActivateFn => {
     return false;
   };
 };
+
+export const noAuthGuard: CanActivateFn = () => {
+  const authService = inject(AuthService);
+  const router = inject(Router);
+
+  if (!authService.isAuthenticated()) {
+    return true;
+  }
+
+  router.navigate(['/dashboard']);
+  return false;
+};

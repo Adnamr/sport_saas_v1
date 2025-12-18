@@ -1,3 +1,8 @@
+// Tailwind CSS
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 // Import tokens and base styles
 @import 'styles/tokens/colors';
 @import 'styles/tokens/typography';

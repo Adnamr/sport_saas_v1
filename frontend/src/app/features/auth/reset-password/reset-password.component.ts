@@ -1,11 +1,10 @@
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, OnInit, inject, signal, computed } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Router, RouterLink, ActivatedRoute } from '@angular/router';
+import { RouterLink, ActivatedRoute } from '@angular/router';
 import { FormBuilder, ReactiveFormsModule, Validators, AbstractControl, ValidationErrors } from '@angular/forms';
 import { AuthService } from '@core/services/auth.service';
-import { CardComponent } from '@shared/components/card/card.component';
-import { ButtonComponent } from '@shared/components/button/button.component';
-import { InputComponent } from '@shared/components/input/input.component';
+
+type TokenState = 'validating' | 'valid' | 'invalid' | 'expired';
 
 @Component({
   selector: 'app-reset-password',
@@ -13,10 +12,7 @@ import { InputComponent } from '@shared/components/input/input.component';
   imports: [
     CommonModule,
     RouterLink,
-    ReactiveFormsModule,
-    CardComponent,
-    ButtonComponent,
-    InputComponent
+    ReactiveFormsModule
   ],
   templateUrl: './reset-password.component.html',
   styleUrl: './reset-password.component.scss'
@@ -24,7 +20,6 @@ import { InputComponent } from '@shared/components/input/input.component';
 export class ResetPasswordComponent implements OnInit {
   private fb = inject(FormBuilder);
   private authService = inject(AuthService);
-  private router = inject(Router);
   private route = inject(ActivatedRoute);
 
   form = this.fb.group({
@@ -33,20 +28,75 @@ export class ResetPasswordComponent implements OnInit {
   }, { validators: this.passwordMatchValidator });
 
   token = '';
+  tokenState = signal<TokenState>('validating');
   isLoading = false;
   isSuccess = false;
   errorMessage = '';
+  showPassword = false;
+  showConfirmPassword = false;
+
+  passwordStrength = signal<'none' | 'weak' | 'medium' | 'strong'>('none');
+
+  strengthLabel = computed(() => {
+    const strength = this.passwordStrength();
+    switch (strength) {
+      case 'weak': return 'Faible';
+      case 'medium': return 'Moyen';
+      case 'strong': return 'Fort';
+      default: return '';
+    }
+  });
 
   ngOnInit(): void {
     this.token = this.route.snapshot.queryParamMap.get('token') || '';
 
     if (!this.token) {
-      this.errorMessage = 'Lien de réinitialisation invalide ou expiré.';
+      this.tokenState.set('invalid');
+    } else {
+      this.validateToken();
     }
   }
 
+  private validateToken(): void {
+    this.tokenState.set('validating');
+
+    this.authService.validateResetToken(this.token).subscribe({
+      next: (response) => {
+        if (response.valid) {
+          this.tokenState.set('valid');
+        } else if (response.expired) {
+          this.tokenState.set('expired');
+        } else {
+          this.tokenState.set('invalid');
+        }
+      },
+      error: () => {
+        this.tokenState.set('invalid');
+      }
+    });
+  }
+
+  onPasswordChange(): void {
+    const password = this.form.get('password')?.value || '';
+    this.passwordStrength.set(this.calculateStrength(password));
+  }
+
+  calculateStrength(password: string): 'none' | 'weak' | 'medium' | 'strong' {
+    if (!password) return 'none';
+    let score = 0;
+    if (password.length >= 8) score++;
+    if (/[A-Z]/.test(password)) score++;
+    if (/[a-z]/.test(password)) score++;
+    if (/[0-9]/.test(password)) score++;
+    if (/[^A-Za-z0-9]/.test(password)) score++;
+
+    if (score <= 2) return 'weak';
+    if (score <= 4) return 'medium';
+    return 'strong';
+  }
+
   onSubmit(): void {
-    if (this.form.invalid || !this.token) return;
+    if (this.form.invalid || !this.token || this.tokenState() !== 'valid') return;
 
     this.isLoading = true;
     this.errorMessage = '';
@@ -60,7 +110,11 @@ export class ResetPasswordComponent implements OnInit {
       },
       error: (error) => {
         this.isLoading = false;
-        this.errorMessage = error.message || 'Une erreur est survenue';
+        if (error.status === 410) {
+          this.tokenState.set('expired');
+        } else {
+          this.errorMessage = error.message || 'Une erreur est survenue';
+        }
       }
     });
   }

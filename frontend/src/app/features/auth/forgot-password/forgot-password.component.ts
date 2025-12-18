@@ -1,11 +1,8 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, signal, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { AuthService } from '@core/services/auth.service';
-import { CardComponent } from '@shared/components/card/card.component';
-import { ButtonComponent } from '@shared/components/button/button.component';
-import { InputComponent } from '@shared/components/input/input.component';
 
 @Component({
   selector: 'app-forgot-password',
@@ -13,17 +10,15 @@ import { InputComponent } from '@shared/components/input/input.component';
   imports: [
     CommonModule,
     RouterLink,
-    ReactiveFormsModule,
-    CardComponent,
-    ButtonComponent,
-    InputComponent
+    ReactiveFormsModule
   ],
   templateUrl: './forgot-password.component.html',
   styleUrl: './forgot-password.component.scss'
 })
-export class ForgotPasswordComponent {
+export class ForgotPasswordComponent implements OnDestroy {
   private fb = inject(FormBuilder);
   private authService = inject(AuthService);
+  private countdownInterval: ReturnType<typeof setInterval> | null = null;
 
   form = this.fb.group({
     email: ['', [Validators.required, Validators.email]]
@@ -32,9 +27,14 @@ export class ForgotPasswordComponent {
   isLoading = false;
   isSubmitted = false;
   errorMessage = '';
+  countdown = signal(0);
+
+  ngOnDestroy(): void {
+    this.clearCountdown();
+  }
 
   onSubmit(): void {
-    if (this.form.invalid) return;
+    if (this.form.invalid || this.countdown() > 0) return;
 
     this.isLoading = true;
     this.errorMessage = '';
@@ -45,12 +45,39 @@ export class ForgotPasswordComponent {
       next: () => {
         this.isLoading = false;
         this.isSubmitted = true;
+        this.startCountdown();
       },
       error: (error) => {
         this.isLoading = false;
         this.errorMessage = error.message || 'Une erreur est survenue';
       }
     });
+  }
+
+  resendEmail(): void {
+    if (this.countdown() > 0) return;
+    this.onSubmit();
+  }
+
+  private startCountdown(): void {
+    this.clearCountdown();
+    this.countdown.set(60);
+    this.countdownInterval = setInterval(() => {
+      const current = this.countdown();
+      if (current <= 1) {
+        this.clearCountdown();
+      } else {
+        this.countdown.set(current - 1);
+      }
+    }, 1000);
+  }
+
+  private clearCountdown(): void {
+    if (this.countdownInterval) {
+      clearInterval(this.countdownInterval);
+      this.countdownInterval = null;
+    }
+    this.countdown.set(0);
   }
 
   getError(field: string): string {
