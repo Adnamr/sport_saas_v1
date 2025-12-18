@@ -1,86 +1,344 @@
-<div class="dashboard">
-  <header class="dashboard-header">
-    <div class="header-content">
-      <h1>Sport SaaS</h1>
-      <nav class="nav">
-        <a routerLink="/dashboard" class="nav-link active">Dashboard</a>
-        <a routerLink="/catalog" class="nav-link">Catalogue</a>
-        <a routerLink="/inventory" class="nav-link">Stock</a>
-        <a routerLink="/orders" class="nav-link">Commandes</a>
-        <a routerLink="/billing" class="nav-link">Facturation</a>
-      </nav>
-      <div class="user-menu">
-        <span>{{ user()?.firstName }} {{ user()?.lastName }}</span>
-        <button (click)="logout()">Déconnexion</button>
+<div class="min-h-screen bg-slate-50">
+  <!-- Header -->
+  <header class="bg-white border-b border-slate-200 sticky top-0 z-50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex items-center justify-between h-16">
+        <!-- Logo & Nav -->
+        <div class="flex items-center gap-8">
+          <h1 class="text-xl font-bold text-slate-900">Sport SaaS</h1>
+          <nav class="hidden md:flex items-center gap-1">
+            <a routerLink="/dashboard" class="px-3 py-2 text-sm font-medium text-blue-600 bg-blue-50 rounded-lg">Dashboard</a>
+            <a routerLink="/catalog" class="px-3 py-2 text-sm font-medium text-slate-600 hover:text-slate-900 hover:bg-slate-100 rounded-lg transition">Catalogue</a>
+            <a routerLink="/inventory" class="px-3 py-2 text-sm font-medium text-slate-600 hover:text-slate-900 hover:bg-slate-100 rounded-lg transition">Stock</a>
+            <a routerLink="/orders" class="px-3 py-2 text-sm font-medium text-slate-600 hover:text-slate-900 hover:bg-slate-100 rounded-lg transition">Commandes</a>
+            <a routerLink="/billing" class="px-3 py-2 text-sm font-medium text-slate-600 hover:text-slate-900 hover:bg-slate-100 rounded-lg transition">Facturation</a>
+          </nav>
+        </div>
+
+        <!-- User menu -->
+        <div class="flex items-center gap-4">
+          <button class="p-2 text-slate-500 hover:text-slate-700 hover:bg-slate-100 rounded-lg transition">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"></path>
+            </svg>
+          </button>
+          <div class="flex items-center gap-3">
+            <div class="w-8 h-8 bg-blue-500 rounded-full flex items-center justify-center text-white text-sm font-medium">
+              {{ user()?.firstName?.charAt(0) }}{{ user()?.lastName?.charAt(0) }}
+            </div>
+            <div class="hidden sm:block">
+              <p class="text-sm font-medium text-slate-900">{{ user()?.firstName }} {{ user()?.lastName }}</p>
+              <p class="text-xs text-slate-500">{{ user()?.email }}</p>
+            </div>
+            <button (click)="logout()" class="p-2 text-slate-500 hover:text-red-600 hover:bg-red-50 rounded-lg transition" title="Déconnexion">
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path>
+              </svg>
+            </button>
+          </div>
+        </div>
       </div>
     </div>
   </header>
 
-  <main class="dashboard-main">
-    <h2>Tableau de bord</h2>
-    <p class="welcome">Bienvenue, {{ user()?.firstName }} !</p>
-
-    <div class="stats-grid">
-      <app-card title="Commandes">
-        <div class="stat">
-          <span class="stat-value">{{ stats.ordersCount }}</span>
-          <span class="stat-label">ce mois</span>
-        </div>
-      </app-card>
-
-      <app-card title="Chiffre d'affaires">
-        <div class="stat">
-          <span class="stat-value">{{ stats.revenue | number:'1.0-0' }} €</span>
-          <span class="stat-label">ce mois</span>
-        </div>
-      </app-card>
-
-      <app-card title="Produits">
-        <div class="stat">
-          <span class="stat-value">{{ stats.productsCount }}</span>
-          <span class="stat-label">en stock</span>
-        </div>
-      </app-card>
-
-      <app-card title="Clients">
-        <div class="stat">
-          <span class="stat-value">{{ stats.customersCount }}</span>
-          <span class="stat-label">actifs</span>
-        </div>
-      </app-card>
+  <!-- Main Content -->
+  <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <!-- Page Header -->
+    <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-8">
+      <div>
+        <h2 class="text-2xl font-bold text-slate-900">Tableau de bord</h2>
+        <p class="text-slate-500 mt-1">Bienvenue, {{ user()?.firstName }} ! Voici un aperçu de votre activité.</p>
+      </div>
+      <!-- Quick Actions -->
+      <div class="flex gap-2">
+        <a routerLink="/orders/new" class="inline-flex items-center gap-2 px-4 py-2 bg-blue-600 text-white text-sm font-medium rounded-lg hover:bg-blue-700 transition">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
+          </svg>
+          Nouvelle commande
+        </a>
+        <a routerLink="/catalog/products/new" class="inline-flex items-center gap-2 px-4 py-2 border border-slate-300 text-slate-700 text-sm font-medium rounded-lg hover:bg-slate-50 transition">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
+          </svg>
+          Ajouter produit
+        </a>
+      </div>
     </div>
 
-    <div class="recent-section">
-      <app-card title="Commandes récentes">
-        @if (recentOrders.length === 0) {
-          <p class="empty-state">Aucune commande récente</p>
-        } @else {
-          <table class="table">
-            <thead>
+    <!-- KPI Cards -->
+    @if (stats()) {
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+        <!-- Revenue Card -->
+        <div class="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm">
+          <div class="flex items-center justify-between mb-4">
+            <div class="w-12 h-12 bg-blue-100 rounded-xl flex items-center justify-center">
+              <svg class="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+              </svg>
+            </div>
+            <span class="flex items-center gap-1 text-sm font-medium"
+                  [class]="stats()!.revenue.trend >= 0 ? 'text-green-600' : 'text-red-600'">
+              @if (stats()!.revenue.trend >= 0) {
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 10l7-7m0 0l7 7m-7-7v18"></path>
+                </svg>
+              } @else {
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"></path>
+                </svg>
+              }
+              {{ stats()!.revenue.trend > 0 ? '+' : '' }}{{ stats()!.revenue.trend }}%
+            </span>
+          </div>
+          <p class="text-sm text-slate-500 mb-1">Chiffre d'affaires</p>
+          <p class="text-2xl font-bold text-slate-900">{{ formatCurrency(stats()!.revenue.value) }}</p>
+          <p class="text-xs text-slate-400 mt-1">{{ stats()!.revenue.period }}</p>
+        </div>
+
+        <!-- Orders Card -->
+        <div class="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm">
+          <div class="flex items-center justify-between mb-4">
+            <div class="w-12 h-12 bg-purple-100 rounded-xl flex items-center justify-center">
+              <svg class="w-6 h-6 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"></path>
+              </svg>
+            </div>
+            <span class="flex items-center gap-1 text-sm font-medium"
+                  [class]="stats()!.orders.trend >= 0 ? 'text-green-600' : 'text-red-600'">
+              @if (stats()!.orders.trend >= 0) {
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 10l7-7m0 0l7 7m-7-7v18"></path>
+                </svg>
+              } @else {
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"></path>
+                </svg>
+              }
+              {{ stats()!.orders.trend > 0 ? '+' : '' }}{{ stats()!.orders.trend }}%
+            </span>
+          </div>
+          <p class="text-sm text-slate-500 mb-1">Commandes</p>
+          <p class="text-2xl font-bold text-slate-900">{{ stats()!.orders.value }}</p>
+          <p class="text-xs text-slate-400 mt-1">{{ stats()!.orders.period }}</p>
+        </div>
+
+        <!-- Products Card -->
+        <div class="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm">
+          <div class="flex items-center justify-between mb-4">
+            <div class="w-12 h-12 bg-amber-100 rounded-xl flex items-center justify-center">
+              <svg class="w-6 h-6 text-amber-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"></path>
+              </svg>
+            </div>
+            <span class="flex items-center gap-1 text-sm font-medium"
+                  [class]="stats()!.products.trend >= 0 ? 'text-green-600' : 'text-red-600'">
+              @if (stats()!.products.trend >= 0) {
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 10l7-7m0 0l7 7m-7-7v18"></path>
+                </svg>
+              } @else {
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"></path>
+                </svg>
+              }
+              {{ stats()!.products.trend > 0 ? '+' : '' }}{{ stats()!.products.trend }}%
+            </span>
+          </div>
+          <p class="text-sm text-slate-500 mb-1">Produits</p>
+          <p class="text-2xl font-bold text-slate-900">{{ stats()!.products.value }}</p>
+          <p class="text-xs text-slate-400 mt-1">{{ stats()!.products.period }}</p>
+        </div>
+
+        <!-- Customers Card -->
+        <div class="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm">
+          <div class="flex items-center justify-between mb-4">
+            <div class="w-12 h-12 bg-green-100 rounded-xl flex items-center justify-center">
+              <svg class="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path>
+              </svg>
+            </div>
+            <span class="flex items-center gap-1 text-sm font-medium"
+                  [class]="stats()!.customers.trend >= 0 ? 'text-green-600' : 'text-red-600'">
+              @if (stats()!.customers.trend >= 0) {
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 10l7-7m0 0l7 7m-7-7v18"></path>
+                </svg>
+              } @else {
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"></path>
+                </svg>
+              }
+              {{ stats()!.customers.trend > 0 ? '+' : '' }}{{ stats()!.customers.trend }}%
+            </span>
+          </div>
+          <p class="text-sm text-slate-500 mb-1">Clients</p>
+          <p class="text-2xl font-bold text-slate-900">{{ stats()!.customers.value }}</p>
+          <p class="text-xs text-slate-400 mt-1">{{ stats()!.customers.period }}</p>
+        </div>
+      </div>
+    }
+
+    <!-- Charts Row -->
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
+      <!-- Revenue Chart -->
+      <div class="lg:col-span-2 bg-white rounded-2xl p-6 border border-slate-200 shadow-sm">
+        <div class="flex items-center justify-between mb-6">
+          <h3 class="text-lg font-semibold text-slate-900">Évolution du CA</h3>
+          <select class="text-sm border border-slate-200 rounded-lg px-3 py-1.5 text-slate-600 focus:outline-none focus:ring-2 focus:ring-blue-500">
+            <option>Ce mois</option>
+            <option>Cette année</option>
+            <option>12 derniers mois</option>
+          </select>
+        </div>
+        <div class="h-72">
+          <canvas baseChart
+            [data]="revenueChartData"
+            [options]="revenueChartOptions"
+            type="line">
+          </canvas>
+        </div>
+      </div>
+
+      <!-- Orders Status Chart -->
+      <div class="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm">
+        <h3 class="text-lg font-semibold text-slate-900 mb-6">Commandes par statut</h3>
+        <div class="h-72">
+          <canvas baseChart
+            [data]="ordersChartData"
+            [options]="ordersChartOptions"
+            type="doughnut">
+          </canvas>
+        </div>
+      </div>
+    </div>
+
+    <!-- Tables Row -->
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+      <!-- Recent Orders -->
+      <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
+        <div class="flex items-center justify-between p-6 border-b border-slate-100">
+          <h3 class="text-lg font-semibold text-slate-900">Dernières commandes</h3>
+          <a routerLink="/orders" class="text-sm text-blue-600 hover:text-blue-700 font-medium">Voir tout</a>
+        </div>
+        <div class="overflow-x-auto">
+          <table class="w-full">
+            <thead class="bg-slate-50">
               <tr>
-                <th>N° Commande</th>
-                <th>Client</th>
-                <th>Montant</th>
-                <th>Statut</th>
+                <th class="px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">Commande</th>
+                <th class="px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">Client</th>
+                <th class="px-6 py-3 text-right text-xs font-medium text-slate-500 uppercase tracking-wider">Montant</th>
+                <th class="px-6 py-3 text-center text-xs font-medium text-slate-500 uppercase tracking-wider">Statut</th>
               </tr>
             </thead>
-            <tbody>
-              @for (order of recentOrders; track order.id) {
-                <tr>
-                  <td>{{ order.orderNumber }}</td>
-                  <td>{{ order.customerName }}</td>
-                  <td>{{ order.amount | number:'1.2-2' }} €</td>
-                  <td>
-                    <span class="badge" [class]="'badge-' + order.statusClass">
-                      {{ order.statusLabel }}
+            <tbody class="divide-y divide-slate-100">
+              @for (order of recentOrders(); track order.id) {
+                <tr class="hover:bg-slate-50 transition">
+                  <td class="px-6 py-4">
+                    <p class="text-sm font-medium text-slate-900">{{ order.orderNumber }}</p>
+                    <p class="text-xs text-slate-500">{{ formatDate(order.date) }}</p>
+                  </td>
+                  <td class="px-6 py-4">
+                    <p class="text-sm text-slate-700">{{ order.customerName }}</p>
+                  </td>
+                  <td class="px-6 py-4 text-right">
+                    <p class="text-sm font-medium text-slate-900">{{ order.amount | number:'1.2-2' }} €</p>
+                  </td>
+                  <td class="px-6 py-4 text-center">
+                    <span class="inline-flex px-2.5 py-0.5 rounded-full text-xs font-medium" [class]="getStatusClass(order.status)">
+                      {{ getStatusLabel(order.status) }}
                     </span>
                   </td>
                 </tr>
               }
+              @empty {
+                <tr>
+                  <td colspan="4" class="px-6 py-8 text-center text-slate-500">Aucune commande récente</td>
+                </tr>
+              }
             </tbody>
           </table>
-        }
-      </app-card>
+        </div>
+      </div>
+
+      <!-- Low Stock Items -->
+      <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
+        <div class="flex items-center justify-between p-6 border-b border-slate-100">
+          <h3 class="text-lg font-semibold text-slate-900">Stock faible</h3>
+          <a routerLink="/inventory" class="text-sm text-blue-600 hover:text-blue-700 font-medium">Voir tout</a>
+        </div>
+        <div class="overflow-x-auto">
+          <table class="w-full">
+            <thead class="bg-slate-50">
+              <tr>
+                <th class="px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">Produit</th>
+                <th class="px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">Catégorie</th>
+                <th class="px-6 py-3 text-right text-xs font-medium text-slate-500 uppercase tracking-wider">Stock</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-slate-100">
+              @for (item of lowStockItems(); track item.id) {
+                <tr class="hover:bg-slate-50 transition">
+                  <td class="px-6 py-4">
+                    <p class="text-sm font-medium text-slate-900">{{ item.name }}</p>
+                    <p class="text-xs text-slate-500">{{ item.sku }}</p>
+                  </td>
+                  <td class="px-6 py-4">
+                    <p class="text-sm text-slate-700">{{ item.category }}</p>
+                  </td>
+                  <td class="px-6 py-4">
+                    <div class="flex items-center justify-end gap-3">
+                      <div class="w-16 bg-slate-100 rounded-full h-2">
+                        <div class="h-2 rounded-full" [class]="getStockLevel(item.currentStock, item.minStock)"
+                             [style.width.%]="(item.currentStock / item.minStock) * 100"></div>
+                      </div>
+                      <span class="text-sm font-medium text-slate-900 w-8 text-right">{{ item.currentStock }}</span>
+                    </div>
+                  </td>
+                </tr>
+              }
+              @empty {
+                <tr>
+                  <td colspan="3" class="px-6 py-8 text-center text-slate-500">Aucun produit en stock faible</td>
+                </tr>
+              }
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- Activity Feed -->
+    <div class="bg-white rounded-2xl border border-slate-200 shadow-sm">
+      <div class="flex items-center justify-between p-6 border-b border-slate-100">
+        <h3 class="text-lg font-semibold text-slate-900">Activité récente</h3>
+      </div>
+      <div class="p-6">
+        <div class="flow-root">
+          <ul class="-mb-8">
+            @for (activity of activityFeed(); track activity.id; let last = $last) {
+              <li>
+                <div class="relative pb-8">
+                  @if (!last) {
+                    <span class="absolute top-5 left-5 -ml-px h-full w-0.5 bg-slate-200" aria-hidden="true"></span>
+                  }
+                  <div class="relative flex items-start space-x-3">
+                    <div class="relative">
+                      <span class="h-10 w-10 rounded-full bg-slate-100 flex items-center justify-center text-lg">
+                        {{ activity.icon }}
+                      </span>
+                    </div>
+                    <div class="min-w-0 flex-1">
+                      <p class="text-sm text-slate-700">{{ activity.message }}</p>
+                      <p class="text-xs text-slate-500 mt-0.5">{{ formatDate(activity.timestamp) }}</p>
+                    </div>
+                  </div>
+                </div>
+              </li>
+            }
+          </ul>
+        </div>
+      </div>
     </div>
   </main>
 </div>
